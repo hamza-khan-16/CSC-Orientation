@@ -155,7 +155,7 @@ function Index() {
   );
 }
 
-const FEEDBACK_URL = "https://orientation.cschcollege.edu.in/feedback";
+const FEEDBACK_URL = "https://csc-orientation.vercel.app/feedback";
 
 function QRSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
