@@ -10,7 +10,7 @@ import labComputer from "@/assets/lab-computer.jpg";
 import labAI from "@/assets/lab-ai.jpg";
 import labNetwork from "@/assets/lab-network.jpg";
 import students from "@/assets/students.jpg";
-import campus from "@/assets/campus.jpg";
+import campus from "@/assets/campus.webp";
 
 export const Route = createFileRoute("/explore")({
   component: Explore,
