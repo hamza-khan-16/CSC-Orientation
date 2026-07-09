@@ -8,8 +8,6 @@ create table if not exists public.feedback (
   id            uuid primary key default gen_random_uuid(),
   created_at    timestamptz default now(),
   name          text,
-  phone         text,
-  course        text check (course in ('bscit','bscds','bscaiml','bsccsdf','bscvfx','bca')),
   orientation   int2 check (orientation between 1 and 5),
   faculty       int2 check (faculty between 1 and 5),
   lab           text check (lab in ('excellent','good','average','needs')),
@@ -17,10 +15,6 @@ create table if not exists public.feedback (
   suggestions   text,
   recommend     text check (recommend in ('yes','maybe','no'))
 );
-
--- If upgrading an existing table, run these migrations:
--- alter table public.feedback add column if not exists phone text;
--- alter table public.feedback add column if not exists course text check (course in ('bscit','bscds','bscaiml','bsccsdf','bscvfx','bca'));
 
 -- Enable Row Level Security
 alter table public.feedback enable row level security;

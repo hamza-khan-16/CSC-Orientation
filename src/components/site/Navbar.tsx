@@ -6,7 +6,7 @@ import { Logo } from "./Logo";
 const links = [
   { to: "/", label: "Home" },
   { to: "/feedback", label: "Feedback" },
-  { to: "/explore", label: "Explore IT" },
+  { to: "/explore", label: "Explore CSC" },
   { to: "/explore", label: "Faculty", hash: "faculty" },
   { to: "/explore", label: "Labs", hash: "labs" },
   { to: "/explore", label: "Projects", hash: "projects" },
@@ -41,7 +41,6 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40">
       <div className="mx-auto mt-3 flex max-w-7xl items-center justify-between gap-3 rounded-2xl glass-card px-3 py-2 sm:px-5 sm:py-3">
-
         {/* Logo — shrinks gracefully */}
         <div className="flex-shrink-0">
           <Logo className="h-9 sm:h-11" />

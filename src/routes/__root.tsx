@@ -77,11 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CSC IT Department — Orientation" },
-      { name: "description", content: "Welcome to the Chandrabhan Sharma College IT Department Orientation. Share feedback and explore our labs, faculty, projects and placements." },
+      { title: "CSC — Orientation" },
+      {
+        name: "description",
+        content:
+          "Welcome to the Chandrabhan Sharma College Orientation. Share feedback and explore our labs, faculty, projects and placements.",
+      },
       { name: "author", content: "Chandrabhan Sharma College" },
-      { property: "og:title", content: "CSC IT Department — Orientation" },
-      { property: "og:description", content: "Share orientation feedback and explore the CSC IT Department." },
+      { property: "og:title", content: "CSC — Orientation" },
+      {
+        property: "og:description",
+        content: "Share orientation feedback and explore Chandrabhan Sharma College.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -93,7 +100,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,

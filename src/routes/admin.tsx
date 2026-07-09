@@ -1,22 +1,49 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  Legend,
 } from "recharts";
 import {
-  LogOut, Users, ImageIcon, FlaskConical, UserCircle2, BarChart2,
-  Upload, Trash2, Eye, EyeOff, Loader2, RefreshCw, ChevronDown, ChevronUp, Star, X,
+  LogOut,
+  Users,
+  ImageIcon,
+  FlaskConical,
+  UserCircle2,
+  BarChart2,
+  Upload,
+  Trash2,
+  Eye,
+  EyeOff,
+  Loader2,
+  RefreshCw,
+  ChevronDown,
+  ChevronUp,
+  Star,
+  X,
 } from "lucide-react";
-import { supabase, type FeedbackRow } from "@/lib/supabase";
+import { supabase, type FeedbackRow, COURSES } from "@/lib/supabase";
 
 // ─── env credentials ──────────────────────────────────────────────────────────
 const ADMIN_USER = import.meta.env.VITE_ADMIN_USER ?? "";
 const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASS ?? "";
 
 // ─── buckets ──────────────────────────────────────────────────────────────────
-const BUCKET_SLIDES  = "slideshow";
-const BUCKET_LABS    = "labs";
+const BUCKET_SLIDES = "slideshow";
+const BUCKET_LABS = "labs";
 const BUCKET_FACULTY = "faculty";
 
 const COLORS = ["#F7941D", "#2D2A22", "#CDEBFF", "#D8F5C4", "#FFD6C0", "#FFDDE7"];
@@ -62,7 +89,10 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   const [loading, setLoading] = useState(false);
 
   const submit = () => {
-    if (!u || !p) { setErr("Please enter username and password."); return; }
+    if (!u || !p) {
+      setErr("Please enter username and password.");
+      return;
+    }
     setLoading(true);
     setTimeout(() => {
       if (u === ADMIN_USER && p === ADMIN_PASS) {
@@ -82,12 +112,14 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
             <Star className="h-7 w-7 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-[#2D2A22]">Admin Panel</h1>
-          <p className="mt-1 text-sm text-[#2D2A22]/60">CSC IT Department · Orientation</p>
+          <p className="mt-1 text-sm text-[#2D2A22]/60">Chandrabhan Sharma College · Orientation</p>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-[#2D2A22]/60">Username</label>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-[#2D2A22]/60">
+              Username
+            </label>
             <input
               value={u}
               onChange={(e) => setU(e.target.value)}
@@ -97,7 +129,9 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-[#2D2A22]/60">Password</label>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-[#2D2A22]/60">
+              Password
+            </label>
             <div className="relative">
               <input
                 value={p}
@@ -136,11 +170,11 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 // DASHBOARD SHELL
 // ══════════════════════════════════════════════════════════════════════════════
 const TABS = [
-  { id: "overview",  label: "Overview",   icon: BarChart2   },
-  { id: "responses", label: "Responses",  icon: Users       },
-  { id: "slides",    label: "Slideshow",  icon: ImageIcon   },
-  { id: "labs",      label: "Lab Photos", icon: FlaskConical},
-  { id: "faculty",   label: "Faculty",    icon: UserCircle2 },
+  { id: "overview", label: "Overview", icon: BarChart2 },
+  { id: "responses", label: "Responses", icon: Users },
+  { id: "slides", label: "Slideshow", icon: ImageIcon },
+  { id: "labs", label: "Lab Photos", icon: FlaskConical },
+  { id: "faculty", label: "Faculty", icon: UserCircle2 },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 
@@ -159,7 +193,9 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     setLoading(false);
   };
 
-  useEffect(() => { loadFeedback(); }, []);
+  useEffect(() => {
+    loadFeedback();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#FAF8F4]">
@@ -172,7 +208,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             </div>
             <div>
               <p className="text-sm font-bold text-[#2D2A22]">Admin Panel</p>
-              <p className="text-xs text-[#2D2A22]/50">CSC IT Orientation 2026</p>
+              <p className="text-xs text-[#2D2A22]/50">CSC Orientation 2026</p>
             </div>
           </div>
           <button
@@ -191,9 +227,10 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                 key={t.id}
                 onClick={() => setTab(t.id)}
                 className={`flex items-center gap-1.5 whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition
-                  ${tab === t.id
-                    ? "border-[oklch(0.735_0.171_55)] text-[oklch(0.735_0.171_55)]"
-                    : "border-transparent text-[#2D2A22]/50 hover:text-[#2D2A22]"
+                  ${
+                    tab === t.id
+                      ? "border-[oklch(0.735_0.171_55)] text-[oklch(0.735_0.171_55)]"
+                      : "border-transparent text-[#2D2A22]/50 hover:text-[#2D2A22]"
                   }`}
               >
                 <t.icon className="h-4 w-4" /> {t.label}
@@ -204,11 +241,27 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-8">
-        {tab === "overview"  && <OverviewTab  feedback={feedback} loading={loading} onRefresh={loadFeedback} />}
-        {tab === "responses" && <ResponsesTab feedback={feedback} loading={loading} onRefresh={loadFeedback} />}
-        {tab === "slides"    && <MediaTab bucket={BUCKET_SLIDES}  title="Slideshow Images" hint="Shown in the home page hero carousel." />}
-        {tab === "labs"      && <MediaTab bucket={BUCKET_LABS}    title="Lab Photos"       hint="Shown in the Explore page labs section." />}
-        {tab === "faculty"   && <FacultyTab />}
+        {tab === "overview" && (
+          <OverviewTab feedback={feedback} loading={loading} onRefresh={loadFeedback} />
+        )}
+        {tab === "responses" && (
+          <ResponsesTab feedback={feedback} loading={loading} onRefresh={loadFeedback} />
+        )}
+        {tab === "slides" && (
+          <MediaTab
+            bucket={BUCKET_SLIDES}
+            title="Slideshow Images"
+            hint="Shown in the home page hero carousel."
+          />
+        )}
+        {tab === "labs" && (
+          <MediaTab
+            bucket={BUCKET_LABS}
+            title="Lab Photos"
+            hint="Shown in the Explore page labs section."
+          />
+        )}
+        {tab === "faculty" && <FacultyTab />}
       </main>
     </div>
   );
@@ -217,35 +270,48 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 // ══════════════════════════════════════════════════════════════════════════════
 // OVERVIEW
 // ══════════════════════════════════════════════════════════════════════════════
-function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]; loading: boolean; onRefresh: () => void }) {
+function OverviewTab({
+  feedback,
+  loading,
+  onRefresh,
+}: {
+  feedback: FeedbackRow[];
+  loading: boolean;
+  onRefresh: () => void;
+}) {
   if (loading) return <Spinner />;
 
-  const total            = feedback.length;
-  const avgOrientation   = avg(feedback.map((f) => f.orientation));
-  const avgFaculty       = avg(feedback.map((f) => f.faculty));
-  const avgFacilities    = avg(feedback.map((f) => f.facilities));
+  const total = feedback.length;
+  const avgOrientation = avg(feedback.map((f) => f.orientation));
+  const avgFaculty = avg(feedback.map((f) => f.faculty));
+  const avgFacilities = avg(feedback.map((f) => f.facilities));
 
   const recData = [
-    { name: "Absolutely 🎉", value: feedback.filter((f) => f.recommend === "yes").length   },
-    { name: "Maybe 🤔",      value: feedback.filter((f) => f.recommend === "maybe").length },
-    { name: "Not yet 😅",    value: feedback.filter((f) => f.recommend === "no").length    },
+    { name: "Absolutely 🎉", value: feedback.filter((f) => f.recommend === "yes").length },
+    { name: "Maybe 🤔", value: feedback.filter((f) => f.recommend === "maybe").length },
+    { name: "Not yet 😅", value: feedback.filter((f) => f.recommend === "no").length },
   ];
 
-  const labData = ["excellent","good","average","needs"].map((k) => ({
+  const labData = ["excellent", "good", "average", "needs"].map((k) => ({
     name: k.charAt(0).toUpperCase() + k.slice(1),
     value: feedback.filter((f) => f.lab === k).length,
   }));
 
   const radarData = [
     { subject: "Orientation", A: avgOrientation * 2, fullMark: 10 },
-    { subject: "Faculty",     A: avgFaculty     * 2, fullMark: 10 },
-    { subject: "Facilities",  A: avgFacilities,       fullMark: 10 },
+    { subject: "Faculty", A: avgFaculty * 2, fullMark: 10 },
+    { subject: "Facilities", A: avgFacilities, fullMark: 10 },
   ];
 
-  const ratingDist = [1,2,3,4,5].map((n) => ({
+  const ratingDist = [1, 2, 3, 4, 5].map((n) => ({
     rating: `⭐ ${n}`,
     orientation: feedback.filter((f) => f.orientation === n).length,
-    faculty:     feedback.filter((f) => f.faculty     === n).length,
+    faculty: feedback.filter((f) => f.faculty === n).length,
+  }));
+
+  const courseData = COURSES.map((c) => ({
+    name: c.label,
+    value: feedback.filter((f) => f.course === c.id).length,
   }));
 
   // Last 7 days timeline
@@ -255,7 +321,10 @@ function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]
     days[dt.toLocaleDateString("en-IN", { weekday: "short", day: "numeric" })] = 0;
   }
   feedback.forEach((f) => {
-    const key = new Date(f.created_at).toLocaleDateString("en-IN", { weekday: "short", day: "numeric" });
+    const key = new Date(f.created_at).toLocaleDateString("en-IN", {
+      weekday: "short",
+      day: "numeric",
+    });
     if (key in days) days[key]++;
   });
   const timelineData = Object.entries(days).map(([date, count]) => ({ date, count }));
@@ -265,12 +334,20 @@ function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]
       {/* Stat cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: "Total Submissions", value: total,              sub: "feedback forms", dark: true  },
-          { label: "Avg. Orientation",  value: `${avgOrientation}/5`, sub: "star rating",   dark: false },
-          { label: "Avg. Faculty",      value: `${avgFaculty}/5`,     sub: "star rating",   dark: false },
-          { label: "Avg. Facilities",   value: `${avgFacilities}/10`, sub: "score",         dark: true  },
+          { label: "Total Submissions", value: total, sub: "feedback forms", dark: true },
+          {
+            label: "Avg. Orientation",
+            value: `${avgOrientation}/5`,
+            sub: "star rating",
+            dark: false,
+          },
+          { label: "Avg. Faculty", value: `${avgFaculty}/5`, sub: "star rating", dark: false },
+          { label: "Avg. Facilities", value: `${avgFacilities}/10`, sub: "score", dark: true },
         ].map((s) => (
-          <div key={s.label} className={`rounded-2xl p-5 text-white ${s.dark ? "bg-[#2D2A22]" : "bg-[oklch(0.735_0.171_55)]"}`}>
+          <div
+            key={s.label}
+            className={`rounded-2xl p-5 text-white ${s.dark ? "bg-[#2D2A22]" : "bg-[oklch(0.735_0.171_55)]"}`}
+          >
             <p className="text-xs font-medium uppercase tracking-wider opacity-60">{s.label}</p>
             <p className="mt-1 text-4xl font-bold">{s.value}</p>
             <p className="text-xs opacity-50">{s.sub}</p>
@@ -279,7 +356,10 @@ function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]
       </div>
 
       <div className="flex justify-end">
-        <button onClick={onRefresh} className="flex items-center gap-1.5 rounded-xl border border-[oklch(0.88_0.01_60)] bg-white px-3 py-1.5 text-xs font-medium text-[#2D2A22]/70 transition hover:bg-[#FAF8F4]">
+        <button
+          onClick={onRefresh}
+          className="flex items-center gap-1.5 rounded-xl border border-[oklch(0.88_0.01_60)] bg-white px-3 py-1.5 text-xs font-medium text-[#2D2A22]/70 transition hover:bg-[#FAF8F4]"
+        >
           <RefreshCw className="h-3.5 w-3.5" /> Refresh
         </button>
       </div>
@@ -292,7 +372,12 @@ function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]
               <XAxis dataKey="date" tick={{ fontSize: 11 }} />
               <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
               <Tooltip />
-              <Bar dataKey="count" name="Submissions" fill="oklch(0.735 0.171 55)" radius={[6,6,0,0]} />
+              <Bar
+                dataKey="count"
+                name="Submissions"
+                fill="oklch(0.735 0.171 55)"
+                radius={[6, 6, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -300,9 +385,18 @@ function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]
         <ChartCard title="Would You Recommend?">
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
-              <Pie data={recData} cx="50%" cy="50%" outerRadius={80} dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false}>
-                {recData.map((_, i) => <Cell key={i} fill={COLORS[i]} />)}
+              <Pie
+                data={recData}
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                dataKey="value"
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                labelLine={false}
+              >
+                {recData.map((_, i) => (
+                  <Cell key={i} fill={COLORS[i]} />
+                ))}
               </Pie>
               <Tooltip />
             </PieChart>
@@ -318,7 +412,7 @@ function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]
               <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11 }} />
               <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} width={80} />
               <Tooltip />
-              <Bar dataKey="value" name="Students" fill="#2D2A22" radius={[0,6,6,0]} />
+              <Bar dataKey="value" name="Students" fill="#2D2A22" radius={[0, 6, 6, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -328,7 +422,13 @@ function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]
             <RadarChart cx="50%" cy="50%" outerRadius={80} data={radarData}>
               <PolarGrid />
               <PolarAngleAxis dataKey="subject" tick={{ fontSize: 12 }} />
-              <Radar name="Avg Score" dataKey="A" stroke="oklch(0.735 0.171 55)" fill="oklch(0.735 0.171 55)" fillOpacity={0.35} />
+              <Radar
+                name="Avg Score"
+                dataKey="A"
+                stroke="oklch(0.735 0.171 55)"
+                fill="oklch(0.735 0.171 55)"
+                fillOpacity={0.35}
+              />
               <Legend />
             </RadarChart>
           </ResponsiveContainer>
@@ -343,8 +443,29 @@ function OverviewTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]
             <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
             <Tooltip />
             <Legend />
-            <Bar dataKey="orientation" name="Orientation" fill="oklch(0.735 0.171 55)" radius={[4,4,0,0]} />
-            <Bar dataKey="faculty"     name="Faculty"     fill="#2D2A22"               radius={[4,4,0,0]} />
+            <Bar
+              dataKey="orientation"
+              name="Orientation"
+              fill="oklch(0.735 0.171 55)"
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar dataKey="faculty" name="Faculty" fill="#2D2A22" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </ChartCard>
+
+      <ChartCard title="Students by Course">
+        <ResponsiveContainer width="100%" height={240}>
+          <BarChart data={courseData} layout="vertical">
+            <CartesianGrid strokeDasharray="3 3" stroke="#F0EDE8" />
+            <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11 }} />
+            <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} width={110} />
+            <Tooltip />
+            <Bar dataKey="value" name="Students" radius={[0, 6, 6, 0]}>
+              {courseData.map((_, idx) => (
+                <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
@@ -364,29 +485,73 @@ function ChartCard({ title, children }: { title: string; children: React.ReactNo
 // ══════════════════════════════════════════════════════════════════════════════
 // RESPONSES TABLE
 // ══════════════════════════════════════════════════════════════════════════════
-function ResponsesTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[]; loading: boolean; onRefresh: () => void }) {
+function ResponsesTab({
+  feedback,
+  loading,
+  onRefresh,
+}: {
+  feedback: FeedbackRow[];
+  loading: boolean;
+  onRefresh: () => void;
+}) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [courseFilter, setCourseFilter] = useState<string>("all");
 
   if (loading) return <Spinner />;
 
+  const filtered =
+    courseFilter === "all" ? feedback : feedback.filter((f) => f.course === courseFilter);
+  const courseLabel = (id: string) => COURSES.find((c) => c.id === id)?.label ?? id;
+
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <p className="text-sm font-semibold text-[#2D2A22]">{feedback.length} total submissions</p>
-        <button onClick={onRefresh} className="flex items-center gap-1.5 rounded-xl border border-[oklch(0.88_0.01_60)] bg-white px-3 py-1.5 text-xs font-medium text-[#2D2A22]/70 transition hover:bg-[#FAF8F4]">
-          <RefreshCw className="h-3.5 w-3.5" /> Refresh
-        </button>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm font-semibold text-[#2D2A22]">
+          {filtered.length} of {feedback.length} submissions
+        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Course filter pills */}
+          <button
+            onClick={() => setCourseFilter("all")}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${courseFilter === "all" ? "border-[oklch(0.735_0.171_55)] bg-[oklch(0.735_0.171_55)] text-white" : "border-[oklch(0.88_0.01_60)] bg-white text-[#2D2A22]/70 hover:bg-[#FAF8F4]"}`}
+          >
+            All
+          </button>
+          {COURSES.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setCourseFilter(c.id)}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${courseFilter === c.id ? "border-[oklch(0.735_0.171_55)] bg-[oklch(0.735_0.171_55)] text-white" : "border-[oklch(0.88_0.01_60)] bg-white text-[#2D2A22]/70 hover:bg-[#FAF8F4]"}`}
+            >
+              {c.label}{" "}
+              <span className="ml-1 opacity-60">
+                ({feedback.filter((f) => f.course === c.id).length})
+              </span>
+            </button>
+          ))}
+          <button
+            onClick={onRefresh}
+            className="flex items-center gap-1.5 rounded-xl border border-[oklch(0.88_0.01_60)] bg-white px-3 py-1.5 text-xs font-medium text-[#2D2A22]/70 transition hover:bg-[#FAF8F4]"
+          >
+            <RefreshCw className="h-3.5 w-3.5" /> Refresh
+          </button>
+        </div>
       </div>
 
-      {feedback.length === 0 && (
+      {filtered.length === 0 && (
         <div className="rounded-2xl border border-dashed border-[oklch(0.88_0.01_60)] p-12 text-center text-sm text-[#2D2A22]/40">
-          No submissions yet. Share the feedback link with students!
+          {feedback.length === 0
+            ? "No submissions yet. Share the feedback link with students!"
+            : "No submissions for this course yet."}
         </div>
       )}
 
       <div className="space-y-3">
-        {feedback.map((f) => (
-          <div key={f.id} className="overflow-hidden rounded-2xl border border-[oklch(0.88_0.01_60)] bg-white">
+        {filtered.map((f) => (
+          <div
+            key={f.id}
+            className="overflow-hidden rounded-2xl border border-[oklch(0.88_0.01_60)] bg-white"
+          >
             <button
               onClick={() => setExpanded(expanded === f.id ? null : f.id)}
               className="flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-[#FAF8F4]"
@@ -397,26 +562,66 @@ function ResponsesTab({ feedback, loading, onRefresh }: { feedback: FeedbackRow[
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-[#2D2A22]">{f.name || "Anonymous"}</p>
-                  <p className="text-xs text-[#2D2A22]/50">{new Date(f.created_at).toLocaleString("en-IN")}</p>
+                  <p className="text-xs text-[#2D2A22]/50">
+                    {f.course ? (
+                      <span className="mr-2 font-medium text-[oklch(0.735_0.171_55)]">
+                        {courseLabel(f.course)}
+                      </span>
+                    ) : null}
+                    {new Date(f.created_at).toLocaleString("en-IN")}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <div className="hidden gap-2 sm:flex">
+                  {f.course && <Badge label={courseLabel(f.course)} />}
                   <Badge label={`⭐ ${f.orientation}/5`} />
                   <Badge label={`👨‍🏫 ${f.faculty}/5`} />
-                  <Badge label={f.recommend === "yes" ? "✅ Recommends" : f.recommend === "maybe" ? "🤔 Maybe" : "😅 Not yet"} />
+                  <Badge
+                    label={
+                      f.recommend === "yes"
+                        ? "✅ Recommends"
+                        : f.recommend === "maybe"
+                          ? "🤔 Maybe"
+                          : "😅 Not yet"
+                    }
+                  />
                 </div>
-                {expanded === f.id ? <ChevronUp className="h-4 w-4 text-[#2D2A22]/40" /> : <ChevronDown className="h-4 w-4 text-[#2D2A22]/40" />}
+                {expanded === f.id ? (
+                  <ChevronUp className="h-4 w-4 text-[#2D2A22]/40" />
+                ) : (
+                  <ChevronDown className="h-4 w-4 text-[#2D2A22]/40" />
+                )}
               </div>
             </button>
 
             {expanded === f.id && (
               <div className="grid gap-4 border-t border-[oklch(0.88_0.01_60)] bg-[#FAF8F4] px-5 py-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Field label="Orientation Rating" value={`${"⭐".repeat(f.orientation)} (${f.orientation}/5)`} />
-                <Field label="Faculty Rating"     value={`${"⭐".repeat(f.faculty)} (${f.faculty}/5)`} />
-                <Field label="Lab Experience"     value={f.lab ? f.lab.charAt(0).toUpperCase() + f.lab.slice(1) : "—"} />
-                <Field label="Facilities Score"   value={`${f.facilities}/10`} />
-                <Field label="Would Recommend"    value={f.recommend === "yes" ? "Absolutely 🎉" : f.recommend === "maybe" ? "Maybe 🤔" : "Not yet 😅"} />
+                <Field label="Course" value={f.course ? courseLabel(f.course) : "—"} />
+                <Field label="Phone" value={f.phone || "—"} />
+                <Field
+                  label="Orientation Rating"
+                  value={`${"⭐".repeat(f.orientation)} (${f.orientation}/5)`}
+                />
+                <Field
+                  label="Faculty Rating"
+                  value={`${"⭐".repeat(f.faculty)} (${f.faculty}/5)`}
+                />
+                <Field
+                  label="Lab Experience"
+                  value={f.lab ? f.lab.charAt(0).toUpperCase() + f.lab.slice(1) : "—"}
+                />
+                <Field label="Facilities Score" value={`${f.facilities}/10`} />
+                <Field
+                  label="Would Recommend"
+                  value={
+                    f.recommend === "yes"
+                      ? "Absolutely 🎉"
+                      : f.recommend === "maybe"
+                        ? "Maybe 🤔"
+                        : "Not yet 😅"
+                  }
+                />
                 {f.suggestions && (
                   <div className="sm:col-span-2 lg:col-span-3">
                     <Field label="Suggestions" value={f.suggestions} />
@@ -454,13 +659,13 @@ function Field({ label, value }: { label: string; value: string }) {
 type MediaFile = { name: string; url: string };
 
 function MediaTab({ bucket, title, hint }: { bucket: string; title: string; hint: string }) {
-  const [files, setFiles]       = useState<MediaFile[]>([]);
-  const [loading, setLoading]   = useState(true);
+  const [files, setFiles] = useState<MediaFile[]>([]);
+  const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [caption, setCaption]   = useState("");
+  const [caption, setCaption] = useState("");
   const [dragOver, setDragOver] = useState(false);
-  const [preview, setPreview]   = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {
@@ -478,23 +683,31 @@ function MediaTab({ bucket, title, hint }: { bucket: string; title: string; hint
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, [bucket]);
+  useEffect(() => {
+    load();
+  }, [bucket]);
 
   const doUpload = async (file: File) => {
     setUploading(true);
     setProgress(10);
-    const ext  = file.name.split(".").pop();
+    const ext = file.name.split(".").pop();
     const name = caption.trim()
-      ? `${caption.trim().replace(/\s+/g, "-").toLowerCase()}-${Date.now()}.${ext}`
+      ? `${caption.trim().replace(/\s+/g, "-").toLowerCase()}.${ext}`
       : `${Date.now()}.${ext}`;
 
     setProgress(40);
     const { error } = await supabase.storage.from(bucket).upload(name, file, { upsert: true });
     setProgress(90);
-    if (!error) { setCaption(""); if (fileRef.current) fileRef.current.value = ""; }
+    if (!error) {
+      setCaption("");
+      if (fileRef.current) fileRef.current.value = "";
+    }
     await load();
     setProgress(100);
-    setTimeout(() => { setUploading(false); setProgress(0); }, 400);
+    setTimeout(() => {
+      setUploading(false);
+      setProgress(0);
+    }, 400);
   };
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -524,13 +737,18 @@ function MediaTab({ bucket, title, hint }: { bucket: string; title: string; hint
 
       {/* Upload zone */}
       <div
-        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
         className={`mb-6 rounded-2xl border-2 border-dashed p-8 text-center transition
           ${dragOver ? "border-[oklch(0.735_0.171_55)] bg-[oklch(0.735_0.171_55)]/10" : "border-[oklch(0.88_0.01_60)] bg-white"}`}
       >
-        <Upload className={`mx-auto mb-3 h-8 w-8 ${dragOver ? "text-[oklch(0.735_0.171_55)]" : "text-[#2D2A22]/30"}`} />
+        <Upload
+          className={`mx-auto mb-3 h-8 w-8 ${dragOver ? "text-[oklch(0.735_0.171_55)]" : "text-[#2D2A22]/30"}`}
+        />
         <p className="text-sm font-medium text-[#2D2A22]">Drag & drop an image here, or</p>
         <p className="mb-4 text-xs text-[#2D2A22]/50">PNG, JPG, WEBP supported</p>
 
@@ -543,9 +761,15 @@ function MediaTab({ bucket, title, hint }: { bucket: string; title: string; hint
               className="w-56 rounded-xl border border-[oklch(0.88_0.01_60)] bg-[#FAF8F4] px-3 py-2 text-sm outline-none focus:border-[oklch(0.735_0.171_55)]"
             />
           </div>
-          <label className={`flex cursor-pointer items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition
-            ${uploading ? "pointer-events-none bg-[#2D2A22]/10 text-[#2D2A22]/40" : "bg-[oklch(0.735_0.171_55)] text-white hover:opacity-90"}`}>
-            {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+          <label
+            className={`flex cursor-pointer items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition
+            ${uploading ? "pointer-events-none bg-[#2D2A22]/10 text-[#2D2A22]/40" : "bg-[oklch(0.735_0.171_55)] text-white hover:opacity-90"}`}
+          >
+            {uploading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Upload className="h-4 w-4" />
+            )}
             {uploading ? "Uploading…" : "Choose from Gallery"}
             <input
               ref={fileRef}
@@ -571,7 +795,9 @@ function MediaTab({ bucket, title, hint }: { bucket: string; title: string; hint
       </div>
 
       {/* Image grid */}
-      {loading ? <Spinner /> : (
+      {loading ? (
+        <Spinner />
+      ) : (
         <>
           {files.length === 0 && (
             <p className="py-10 text-center text-sm text-[#2D2A22]/40">
@@ -580,9 +806,19 @@ function MediaTab({ bucket, title, hint }: { bucket: string; title: string; hint
           )}
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {files.map((f) => (
-              <div key={f.name} className="group relative overflow-hidden rounded-2xl border border-[oklch(0.88_0.01_60)] bg-white">
-                <div className="aspect-video cursor-pointer overflow-hidden bg-[#F0EDE8]" onClick={() => setPreview(f.url)}>
-                  <img src={f.url} alt={f.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+              <div
+                key={f.name}
+                className="group relative overflow-hidden rounded-2xl border border-[oklch(0.88_0.01_60)] bg-white"
+              >
+                <div
+                  className="aspect-video cursor-pointer overflow-hidden bg-[#F0EDE8]"
+                  onClick={() => setPreview(f.url)}
+                >
+                  <img
+                    src={f.url}
+                    alt={f.name}
+                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                  />
                 </div>
                 <div className="flex items-center justify-between gap-2 px-3 py-2.5">
                   <p className="truncate text-xs font-medium text-[#2D2A22]">{f.name}</p>
@@ -624,14 +860,73 @@ function MediaTab({ bucket, title, hint }: { bucket: string; title: string; hint
 // FACULTY TAB
 // ══════════════════════════════════════════════════════════════════════════════
 const DEFAULT_FACULTY = [
-  { id: "neha-sharma",  name: "Dr. Neha Sharma",  role: "HOD · IT Dept."     },
-  { id: "amit-verma",   name: "Prof. Amit Verma",  role: "Assistant Professor" },
-  { id: "priya-nair",   name: "Prof. Priya Nair",  role: "Assistant Professor" },
-  { id: "rahul-mehta",  name: "Prof. Rahul Mehta", role: "Assistant Professor" },
+  {
+    id: "Vaishali Rajput",
+    name: "Dr. Vaishali Rajput",
+    role: "I/C Principal, SDC Director",
+    qual: "Ph.D, M.Com",
+    tint: "#D8F5C4",
+  },
+  {
+    id: "Sandeep Vishwakarma",
+    name: "Mr. Sandeep Vishwakarma",
+    role: "HOD · IT Dept.",
+    qual: "B.Sc. (Physics), MCA, MBA, Ph.D. Scholar",
+    tint: "#FFE7B8",
+  },
+  {
+    id: "Arvind Singh",
+    name: "Mr. Arvind Singh",
+    role: "Coordinator-B.Sc.IT, B.Sc. CS & DF",
+    qual: "M.Sc. (Computer Science)",
+    tint: "#FFD6C0",
+  },
+  {
+    id: "Sailaja Tiwari",
+    name: "Ms. Sailaja Tiwari",
+    role: "Assistant Professor",
+    qual: "M.Sc.IT",
+    tint: "#CDEBFF",
+  },
+  {
+    id: "Dheeraj Vishwakarma",
+    name: "Mr. Dheeraj Vishwakarma",
+    role: "Assistant Professor",
+    qual: "MSc(Statistics), B.Ed",
+    tint: "#FFD6C0",
+  },
+  {
+    id: "Vani Bandi",
+    name: "Ms. Vani Bandi",
+    role: "Assistant Professor",
+    qual: "MSc(Statistics)",
+    tint: "#CDEBFF",
+  },
+  {
+    id: "Sahil Bhalekar",
+    name: "Mr. Sahil Bhalekar",
+    role: "Assistant Professor",
+    qual: "Mr. Sahil Bhalekar",
+    tint: "#CDEBFF",
+  },
+   {
+    id: "Priyam Chavan",
+    name: "Mr. Priyam Chavan",
+    role: "Assistant Professor",
+    qual: "M.Sc.IT",
+    tint: "#CDEBFF",
+  },
+  {
+    id: "Vikesh Kumar Singh",
+    name: "Mr. Vikesh Kumar Singh",
+    role: "Assistant Professor",
+    qual: "Animation & VFX Expert",
+    tint: "#CDEBFF",
+  },
 ];
 
 function FacultyTab() {
-  const [photos, setPhotos]     = useState<Record<string, string>>({});
+  const [photos, setPhotos] = useState<Record<string, string>>({});
   const [uploading, setUploading] = useState<string | null>(null);
 
   const loadPhotos = async () => {
@@ -639,21 +934,27 @@ function FacultyTab() {
     for (const m of DEFAULT_FACULTY) {
       const { data } = await supabase.storage.from(BUCKET_FACULTY).list("", { search: m.id });
       if (data && data.length > 0) {
-        result[m.id] = supabase.storage.from(BUCKET_FACULTY).getPublicUrl(data[0].name).data.publicUrl;
+        result[m.id] = supabase.storage
+          .from(BUCKET_FACULTY)
+          .getPublicUrl(data[0].name).data.publicUrl;
       }
     }
     setPhotos(result);
   };
 
-  useEffect(() => { loadPhotos(); }, []);
+  useEffect(() => {
+    loadPhotos();
+  }, []);
 
   const upload = async (memberId: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(memberId);
-    const ext  = file.name.split(".").pop();
+    const ext = file.name.split(".").pop();
     const name = `${memberId}.${ext}`;
-    const { data: old } = await supabase.storage.from(BUCKET_FACULTY).list("", { search: memberId });
+    const { data: old } = await supabase.storage
+      .from(BUCKET_FACULTY)
+      .list("", { search: memberId });
     if (old && old.length > 0)
       await supabase.storage.from(BUCKET_FACULTY).remove(old.map((f) => f.name));
     await supabase.storage.from(BUCKET_FACULTY).upload(name, file, { upsert: true });
@@ -673,12 +974,17 @@ function FacultyTab() {
     <div>
       <div className="mb-6">
         <h2 className="text-lg font-bold text-[#2D2A22]">Faculty Photos</h2>
-        <p className="text-sm text-[#2D2A22]/50">Upload a photo for each faculty member. Displayed on the Explore page.</p>
+        <p className="text-sm text-[#2D2A22]/50">
+          Upload a photo for each faculty member. Displayed on the Explore page.
+        </p>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {DEFAULT_FACULTY.map((m) => (
-          <div key={m.id} className="rounded-2xl border border-[oklch(0.88_0.01_60)] bg-white p-5 text-center">
+          <div
+            key={m.id}
+            className="rounded-2xl border border-[oklch(0.88_0.01_60)] bg-white p-5 text-center"
+          >
             <div className="relative mx-auto mb-3 h-24 w-24">
               {photos[m.id] ? (
                 <img

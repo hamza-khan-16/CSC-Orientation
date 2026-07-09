@@ -10,6 +10,8 @@ export type FeedbackRow = {
   id: string;
   created_at: string;
   name: string;
+  phone: string;
+  course: string;
   orientation: number;
   faculty: number;
   lab: string;
@@ -17,3 +19,14 @@ export type FeedbackRow = {
   suggestions: string;
   recommend: "yes" | "maybe" | "no";
 };
+
+export const COURSES = [
+  { id: "bscit", label: "B.Sc.IT", sub: "Information Technology" },
+  { id: "bscds", label: "B.Sc.DS", sub: "Data Science" },
+  { id: "bscaiml", label: "B.Sc.(AI & ML)", sub: "Artificial Intelligence & Machine Learning" },
+  { id: "bsccsdf", label: "B.Sc.(CS & DF)", sub: "Cyber Security & Digital Forensics" },
+  { id: "bscvfx", label: "B.Sc.(VFX)", sub: "Animation & Visual Effects" },
+  { id: "bca", label: "BCA", sub: "Computer Applications" },
+] as const;
+
+export type CourseId = (typeof COURSES)[number]["id"];

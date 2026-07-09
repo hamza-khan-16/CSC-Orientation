@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Sparkles, Users, FlaskConical, Rocket, Star as StarIcon, Maximize2, X } from "lucide-react";
+import {
+  ArrowRight,
+  Sparkles,
+  Users,
+  FlaskConical,
+  Rocket,
+  Star as StarIcon,
+  Maximize2,
+  X,
+} from "lucide-react";
 import QRCode from "qrcode";
 import { supabase } from "@/lib/supabase";
 import { Navbar } from "@/components/site/Navbar";
@@ -30,13 +39,17 @@ function Index() {
   // Load slideshow images from Supabase, fall back to local assets
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.storage.from("slideshow").list("", { sortBy: { column: "created_at", order: "asc" } });
-      const items = (data ?? []).filter(f => !f.name.startsWith("."));
+      const { data } = await supabase.storage
+        .from("slideshow")
+        .list("", { sortBy: { column: "created_at", order: "asc" } });
+      const items = (data ?? []).filter((f) => !f.name.startsWith("."));
       if (items.length > 0) {
-        setSlides(items.map(f => ({
-          src: supabase.storage.from("slideshow").getPublicUrl(f.name).data.publicUrl,
-          label: f.name.replace(/[-_]/g, " ").replace(/\.[^.]+$/, ""),
-        })));
+        setSlides(
+          items.map((f) => ({
+            src: supabase.storage.from("slideshow").getPublicUrl(f.name).data.publicUrl,
+            label: f.name.replace(/[-_]/g, " ").replace(/\.[^.]+$/, ""),
+          })),
+        );
       }
     })();
   }, []);
@@ -54,35 +67,47 @@ function Index() {
       <section className="relative mx-auto max-w-7xl px-6 pt-12 pb-24 sm:pt-16">
         {/* floating doodles */}
         <Star className="floaty absolute left-4 top-24 h-8 w-8 text-primary/60" />
-        <Bulb className="floaty absolute right-10 top-40 h-9 w-9 text-secondary/60" style={{ animationDelay: "1s" } as React.CSSProperties} />
-        <Plane className="floaty absolute left-1/2 top-6 h-10 w-10 -translate-x-1/2 text-secondary/50" style={{ animationDelay: "2s" } as React.CSSProperties} />
+        <Bulb
+          className="floaty absolute right-10 top-40 h-9 w-9 text-secondary/60"
+          style={{ animationDelay: "1s" } as React.CSSProperties}
+        />
+        <Plane
+          className="floaty absolute left-1/2 top-6 h-10 w-10 -translate-x-1/2 text-secondary/50"
+          style={{ animationDelay: "2s" } as React.CSSProperties}
+        />
 
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
           <div className="relative">
             <motion.p
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 rounded-full border border-border bg-white/70 px-3 py-1 text-xs font-medium uppercase tracking-widest text-secondary/70"
             >
               <Sparkles className="h-3.5 w-3.5 text-primary" /> Orientation 2026 · Batch of ’30
             </motion.p>
 
             <motion.h1
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
               className="mt-5 font-display text-6xl leading-[0.95] text-secondary sm:text-7xl md:text-8xl"
             >
               Welcome to <br />
               <span className="relative inline-block">
-                <span className="ink-underline px-1 text-primary">IT Department</span>
-              </span><br />
+                <span className="ink-underline px-1 text-primary">Chandrabhan Sharma College</span>
+              </span>
+              <br />
               Orientation
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
               className="mt-6 max-w-lg text-lg text-muted-foreground"
             >
-              Your voice shapes the way we teach, the labs we build and the community we
-              grow. Take two minutes to share how your first day felt.
+              Your voice shapes the way we teach, the labs we build and the community we grow. Take
+              two minutes to share how your first day felt.
             </motion.p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -95,7 +120,10 @@ function Index() {
                   <ArrowRight className="h-4 w-4" />
                 </span>
               </Link>
-              <Link to="/explore" className="text-sm font-medium text-secondary/80 underline decoration-primary decoration-2 underline-offset-4 hover:text-primary">
+              <Link
+                to="/explore"
+                className="text-sm font-medium text-secondary/80 underline decoration-primary decoration-2 underline-offset-4 hover:text-primary"
+              >
                 or peek inside the department →
               </Link>
             </div>
@@ -114,7 +142,8 @@ function Index() {
                       key={i}
                       src={slides[i].src}
                       alt={slides[i].label}
-                      width={1280} height={960}
+                      width={1280}
+                      height={960}
                       initial={{ opacity: 0, scale: 1.05 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.98 }}
@@ -123,10 +152,17 @@ function Index() {
                     />
                   </AnimatePresence>
                 </div>
-                <p className="mt-3 text-center font-display text-2xl text-secondary">{slides[i].label}</p>
+                <p className="mt-3 text-center font-display text-2xl text-secondary">
+                  {slides[i].label}
+                </p>
                 <div className="mt-2 flex justify-center gap-1.5">
                   {slides.map((_, k) => (
-                    <button key={k} onClick={() => setI(k)} className={`h-1.5 rounded-full transition-all ${k === i ? "w-6 bg-primary" : "w-1.5 bg-secondary/25"}`} aria-label={`slide ${k + 1}`} />
+                    <button
+                      key={k}
+                      onClick={() => setI(k)}
+                      className={`h-1.5 rounded-full transition-all ${k === i ? "w-6 bg-primary" : "w-1.5 bg-secondary/25"}`}
+                      aria-label={`slide ${k + 1}`}
+                    />
                   ))}
                 </div>
               </div>
@@ -136,7 +172,9 @@ function Index() {
             <div className="absolute -bottom-8 -left-6 hidden rotate-[-6deg] sm:block">
               <div className="sticky-note w-40 px-4 py-3 text-secondary">
                 <p className="font-display text-lg leading-tight">Building futures with</p>
-                <p className="font-display text-lg leading-tight text-primary">code & creativity ✎</p>
+                <p className="font-display text-lg leading-tight text-primary">
+                  code & creativity ✎
+                </p>
               </div>
             </div>
           </div>
@@ -146,15 +184,15 @@ function Index() {
       {/* QR + WHY */}
       <QRSection />
 
-            {/* Big CTA */}
+      {/* Big CTA */}
       <section className="mx-auto mt-24 max-w-5xl px-6 text-center">
         <Squiggle className="mx-auto h-6 w-40 text-primary" />
         <h2 className="mt-4 font-display text-5xl leading-tight text-secondary sm:text-6xl">
           Ready to leave your mark on the notebook?
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          Ten quick steps. Handwritten questions, tap-to-answer style. Your notes stay
-          anonymous unless you sign them.
+          Ten quick steps. Handwritten questions, tap-to-answer style. Your notes stay anonymous
+          unless you sign them.
         </p>
         <Link
           to="/feedback"
@@ -172,7 +210,7 @@ function Index() {
   );
 }
 
-const FEEDBACK_URL = "https://orientation.cschcollege.edu.in/feedback";
+const FEEDBACK_URL = "https://csc-orientation.vercel.app/feedback";
 
 function QRSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -220,9 +258,13 @@ function QRSection() {
             >
               <X className="h-4 w-4" />
             </button>
-            <p className="mb-4 text-center font-display text-2xl text-secondary">Scan to give feedback</p>
+            <p className="mb-4 text-center font-display text-2xl text-secondary">
+              Scan to give feedback
+            </p>
             <canvas ref={modalCanvasRef} className="rounded-xl" />
-            <p className="mt-3 text-center text-xs text-muted-foreground break-all max-w-xs">{FEEDBACK_URL}</p>
+            <p className="mt-3 text-center text-xs text-muted-foreground break-all max-w-xs">
+              {FEEDBACK_URL}
+            </p>
           </motion.div>
         </div>
       )}
@@ -231,7 +273,9 @@ function QRSection() {
         <div className="grid gap-10 rounded-3xl paper-card p-8 md:p-12 lg:grid-cols-[1fr_1.2fr]">
           <div>
             <p className="font-display text-xl text-primary">Scan · Share · Shape</p>
-            <h2 className="mt-1 font-display text-4xl text-secondary sm:text-5xl">Point your camera, share your voice.</h2>
+            <h2 className="mt-1 font-display text-4xl text-secondary sm:text-5xl">
+              Point your camera, share your voice.
+            </h2>
             <p className="mt-4 max-w-md text-muted-foreground">
               Every sticky note on this wall started as a scan. Aim your phone at the code and
               you'll land on the feedback notebook.
@@ -250,7 +294,9 @@ function QRSection() {
                 <div className="h-40 w-24 rounded-2xl border-4 border-secondary bg-white shadow-lg">
                   <div className="mx-auto mt-2 h-1 w-8 rounded bg-secondary/60" />
                   <div className="mx-auto mt-3 grid h-24 w-16 place-items-center rounded-md bg-muted overflow-hidden">
-                    {qrDataUrl && <img src={qrDataUrl} alt="QR" className="h-full w-full object-cover" />}
+                    {qrDataUrl && (
+                      <img src={qrDataUrl} alt="QR" className="h-full w-full object-cover" />
+                    )}
                   </div>
                 </div>
                 <Star className="floaty absolute -right-6 -top-4 h-6 w-6 text-primary" />
@@ -265,17 +311,44 @@ function QRSection() {
           </div>
 
           <div>
-            <h3 className="font-display text-4xl text-secondary sm:text-5xl">Why your feedback matters</h3>
+            <h3 className="font-display text-4xl text-secondary sm:text-5xl">
+              Why your feedback matters
+            </h3>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {[
-                { icon: Users, title: "Better teaching", body: "Real notes from you tune how faculty run every session.", color: "#FFF4B8", rot: "-2deg" },
-                { icon: FlaskConical, title: "Sharper labs", body: "We upgrade the tools and stacks students actually use.", color: "#CDEBFF", rot: "1.5deg" },
-                { icon: Rocket, title: "Room to grow", body: "New clubs, hackathons and mentors — sparked by your ideas.", color: "#FFD6C0", rot: "-1deg" },
-                { icon: StarIcon, title: "Your experience", body: "The little details that make orientation feel unforgettable.", color: "#D8F5C4", rot: "2deg" },
+                {
+                  icon: Users,
+                  title: "Better teaching",
+                  body: "Real notes from you tune how faculty run every session.",
+                  color: "#FFF4B8",
+                  rot: "-2deg",
+                },
+                {
+                  icon: FlaskConical,
+                  title: "Sharper labs",
+                  body: "We upgrade the tools and stacks students actually use.",
+                  color: "#CDEBFF",
+                  rot: "1.5deg",
+                },
+                {
+                  icon: Rocket,
+                  title: "Room to grow",
+                  body: "New clubs, hackathons and mentors — sparked by your ideas.",
+                  color: "#FFD6C0",
+                  rot: "-1deg",
+                },
+                {
+                  icon: StarIcon,
+                  title: "Your experience",
+                  body: "The little details that make orientation feel unforgettable.",
+                  color: "#D8F5C4",
+                  rot: "2deg",
+                },
               ].map(({ icon: I, title, body, color, rot }) => (
                 <motion.div
                   key={title}
                   whileHover={{ y: -6, rotate: 0 }}
+                  whileTap={{ y: -3, scale: 0.97 }}
                   style={{ background: color, transform: `rotate(${rot})` }}
                   className="relative rounded-md p-5 shadow-[2px_10px_24px_-12px_rgba(0,0,0,0.25)]"
                 >

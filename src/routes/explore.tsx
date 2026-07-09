@@ -1,7 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Mail, Phone, MapPin, Users, GraduationCap, Trophy, Briefcase, Cpu, Wifi, Shield, Code2, Network } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Users,
+  GraduationCap,
+  Trophy,
+  Briefcase,
+  Cpu,
+  Wifi,
+  Shield,
+  Code2,
+  Network,
+} from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { supabase } from "@/lib/supabase";
 import { Footer } from "@/components/site/Footer";
@@ -10,16 +23,23 @@ import labComputer from "@/assets/lab-computer.jpg";
 import labAI from "@/assets/lab-ai.jpg";
 import labNetwork from "@/assets/lab-network.jpg";
 import students from "@/assets/students.jpg";
-import campus from "@/assets/campus.jpg";
+import campus from "@/assets/campus.webp";
 
 export const Route = createFileRoute("/explore")({
   component: Explore,
   head: () => ({
     meta: [
-      { title: "Explore IT Department · CSC" },
-      { name: "description", content: "Meet the CSC IT Department: faculty, labs, projects, placements and achievements." },
-      { property: "og:title", content: "Explore CSC IT Department" },
-      { property: "og:description", content: "Faculty, labs, projects and placements at Chandrabhan Sharma College IT Department." },
+      { title: "Explore CSC · Chandrabhan Sharma College" },
+      {
+        name: "description",
+        content:
+          "Meet Chandrabhan Sharma College: faculty, labs, projects, placements and achievements.",
+      },
+      { property: "og:title", content: "Explore Chandrabhan Sharma College" },
+      {
+        property: "og:description",
+        content: "Faculty, labs, projects and placements at Chandrabhan Sharma College.",
+      },
     ],
   }),
 });
@@ -46,23 +66,92 @@ function Counter({ to, suffix }: { to: number; suffix: string }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [to]);
-  return <span className="font-num">{n}{suffix}</span>;
+  return (
+    <span className="font-num">
+      {n}
+      {suffix}
+    </span>
+  );
 }
 
 const labs = [
   { name: "Computer Lab", icon: Cpu, fallback: labComputer, note: "60 workstations · dual-boot" },
   { name: "AI & ML Lab", icon: Star, fallback: labAI, note: "NVIDIA GPUs · Jupyter cluster" },
-  { name: "Networking Lab", icon: Network, fallback: labNetwork, note: "Cisco routers · Packet Tracer" },
+  {
+    name: "Networking Lab",
+    icon: Network,
+    fallback: labNetwork,
+    note: "Cisco routers · Packet Tracer",
+  },
   { name: "IoT Lab", icon: Wifi, fallback: labComputer, note: "Raspberry Pi · Arduino kits" },
   { name: "Cyber Security Lab", icon: Shield, fallback: labNetwork, note: "Kali · CTF sandbox" },
   { name: "Programming Lab", icon: Code2, fallback: students, note: "Multi-language, 24/7 access" },
 ];
 
 const faculty = [
-  { id: "neha-sharma",  name: "Dr. Neha Sharma", role: "HOD · IT Dept.", qual: "Ph.D. (CSE)", tint: "#FFE7B8" },
-  { id: "amit-verma",   name: "Prof. Amit Verma", role: "Assistant Professor", qual: "M.Tech", tint: "#CDEBFF" },
-  { id: "priya-nair",   name: "Prof. Priya Nair", role: "Assistant Professor", qual: "B.Tech", tint: "#D8F5C4" },
-  { id: "rahul-mehta",  name: "Prof. Rahul Mehta", role: "Assistant Professor", qual: "M.Tech", tint: "#FFD6C0" },
+  {
+    id: "Vaishali Rajput",
+    name: "Dr. Vaishali Rajput",
+    role: "I/C Principal, SDC Director",
+    qual: "Ph.D, M.Com",
+    tint: "#D8F5C4",
+  },
+  {
+    id: "Sandeep Vishwakarma",
+    name: "Mr. Sandeep Vishwakarma",
+    role: "HOD · IT Dept.",
+    qual: "B.Sc. (Physics), MCA, MBA, Ph.D. Scholar",
+    tint: "#FFE7B8",
+  },
+  {
+    id: "Arvind Singh",
+    name: "Mr. Arvind Singh",
+    role: "Coordinator-B.Sc.IT, B.Sc. CS & DF",
+    qual: "M.Sc. (Computer Science)",
+    tint: "#FFD6C0",
+  },
+  {
+    id: "Sailaja Tiwari",
+    name: "Ms. Sailaja Tiwari",
+    role: "Assistant Professor",
+    qual: "M.Sc.IT",
+    tint: "#CDEBFF",
+  },
+  {
+    id: "Dheeraj Vishwakarma",
+    name: "Mr. Dheeraj Vishwakarma",
+    role: "Assistant Professor",
+    qual: "MSc(Statistics), B.Ed",
+    tint: "#FFD6C0",
+  },
+  {
+    id: "Vani Bandi",
+    name: "Ms. Vani Bandi",
+    role: "Assistant Professor",
+    qual: "MSc(Statistics)",
+    tint: "#CDEBFF",
+  },
+  {
+    id: "Sahil Bhalekar",
+    name: "Mr. Sahil Bhalekar",
+    role: "Assistant Professor",
+    qual: "MCA",
+    tint: "#CDEBFF",
+  },
+  {
+    id: "Priyam Chavan",
+    name: "Mr. Priyam Chavan",
+    role: "Assistant Professor",
+    qual: "M.Sc.IT",
+    tint: "#CDEBFF",
+  },
+  {
+    id: "Vikesh Kumar Singh",
+    name: "Mr. Vikesh Kumar Singh",
+    role: "Assistant Professor",
+    qual: "Animation & VFX Expert",
+    tint: "#CDEBFF",
+  },
 ];
 
 const projects = [
@@ -75,16 +164,31 @@ const projects = [
 ];
 
 const testimonials = [
-  { name: "Ananya S.", quote: "Orientation was amazing! Got a clear idea about labs, opportunities and my future.", tint: "#FFF4B8" },
-  { name: "Rohit P.", quote: "The faculty are very supportive and the vibe is just awesome.", tint: "#D8F5C4" },
-  { name: "Mehak T.", quote: "Best department with great exposure and practical learning.", tint: "#CDEBFF" },
-  { name: "Kabir J.", quote: "Loved the labs — got hands-on with AI hardware from day one.", tint: "#FFD6C0" },
+  {
+    name: "Ananya S.",
+    quote: "Orientation was amazing! Got a clear idea about labs, opportunities and my future.",
+    tint: "#FFF4B8",
+  },
+  {
+    name: "Rohit P.",
+    quote: "The faculty are very supportive and the vibe is just awesome.",
+    tint: "#D8F5C4",
+  },
+  {
+    name: "Mehak T.",
+    quote: "Best department with great exposure and practical learning.",
+    tint: "#CDEBFF",
+  },
+  {
+    name: "Kabir J.",
+    quote: "Loved the labs — got hands-on with AI hardware from day one.",
+    tint: "#FFD6C0",
+  },
 ];
 
 function Explore() {
   const [facultyPhotos, setFacultyPhotos] = useState<Record<string, string>>({});
-  const [labPhotos, setLabPhotos]         = useState<string[]>([]);
-  const [campusPhoto, setCampusPhoto]     = useState<string>("");
+  const [labPhotos, setLabPhotos] = useState<string[]>([]);
 
   useEffect(() => {
     // Faculty photos
@@ -101,19 +205,14 @@ function Explore() {
 
     // Lab photos
     (async () => {
-      const { data } = await supabase.storage.from("labs").list("", { sortBy: { column: "created_at", order: "asc" } });
-      const items = (data ?? []).filter(f => !f.name.startsWith("."));
+      const { data } = await supabase.storage
+        .from("labs")
+        .list("", { sortBy: { column: "created_at", order: "asc" } });
+      const items = (data ?? []).filter((f) => !f.name.startsWith("."));
       if (items.length > 0) {
-        setLabPhotos(items.map(f => supabase.storage.from("labs").getPublicUrl(f.name).data.publicUrl));
-      }
-    })();
-
-    // Campus hero
-    (async () => {
-      const { data } = await supabase.storage.from("slideshow").list("", { sortBy: { column: "created_at", order: "asc" } });
-      const items = (data ?? []).filter(f => !f.name.startsWith("."));
-      if (items.length > 0) {
-        setCampusPhoto(supabase.storage.from("slideshow").getPublicUrl(items[0].name).data.publicUrl);
+        setLabPhotos(
+          items.map((f) => supabase.storage.from("labs").getPublicUrl(f.name).data.publicUrl),
+        );
       }
     })();
   }, []);
@@ -128,16 +227,22 @@ function Explore() {
           <div>
             <p className="font-display text-xl text-primary">Innovate · Code · Transform</p>
             <h1 className="mt-1 font-display text-7xl leading-[0.95] text-secondary sm:text-8xl">
-              Explore <span className="ink-underline text-primary">IT Department</span>
+              Explore <span className="ink-underline text-primary">CSC</span>
             </h1>
             <p className="mt-5 max-w-lg text-muted-foreground">
-              Six labs, thirty-two faculty, hundreds of student-built projects — this is
-              where the next generation of engineers gets built at CSC.
+              Six labs, thirty-two faculty, hundreds of student-built projects — this is where the
+              next generation of engineers gets built at Chandrabhan Sharma College.
             </p>
           </div>
           <div className="relative">
             <span className="tape left-8 -top-3 rotate-[-6deg]" />
-            <img src={campusPhoto || campus} alt="CSC campus" width={1280} height={960} className="aspect-[16/10] w-full rounded-2xl object-cover shadow-xl" />
+            <img
+              src={campus}
+              alt="CSC campus"
+              width={1280}
+              height={960}
+              className="aspect-[16/10] w-full rounded-2xl object-cover shadow-xl"
+            />
             <Arrow className="absolute -bottom-10 -left-6 hidden h-16 w-32 text-secondary/50 sm:block" />
           </div>
         </div>
@@ -149,7 +254,9 @@ function Explore() {
               <div className="font-display text-5xl text-secondary sm:text-6xl">
                 <Counter to={s.n} suffix={s.s} />
               </div>
-              <div className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">{s.label}</div>
+              <div className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
+                {s.label}
+              </div>
             </div>
           ))}
         </div>
@@ -166,9 +273,21 @@ function Explore() {
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {labs.map((l, i) => (
-            <motion.div key={l.name} whileHover={{ y: -6, rotate: -0.5 }} className="paper-card overflow-hidden">
+            <motion.div
+              key={l.name}
+              whileHover={{ y: -6, rotate: -0.5 }}
+              whileTap={{ y: -3, rotate: -0.5, scale: 0.98 }}
+              className="paper-card overflow-hidden"
+            >
               <div className="relative aspect-[16/10] overflow-hidden">
-                <img src={labPhotos[i] ?? l.fallback} alt={l.name} width={1280} height={960} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
+                <img
+                  src={labPhotos[i] ?? l.fallback}
+                  alt={l.name}
+                  width={1280}
+                  height={960}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                />
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2">
@@ -188,11 +307,23 @@ function Explore() {
         <h2 className="font-display text-5xl text-secondary">Mentors on speed-dial.</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {faculty.map((f, i) => (
-            <motion.div key={f.name} whileHover={{ y: -6, rotate: i % 2 ? 1 : -1 }} className="relative paper-card p-6 text-center">
+            <motion.div
+              key={f.name}
+              whileHover={{ y: -6, rotate: i % 2 ? 1 : -1 }}
+              whileTap={{ y: -3, scale: 0.97 }}
+              className="relative paper-card p-6 text-center"
+            >
               <span className="tape left-1/2 -top-3 -translate-x-1/2 rotate-[-6deg]" />
-              <div className="mx-auto h-24 w-24 overflow-hidden rounded-full" style={{ background: f.tint }}>
+              <div
+                className="mx-auto h-24 w-24 overflow-hidden rounded-full"
+                style={{ background: f.tint }}
+              >
                 {facultyPhotos[f.id] ? (
-                  <img src={facultyPhotos[f.id]} alt={f.name} className="h-full w-full object-cover" />
+                  <img
+                    src={facultyPhotos[f.id]}
+                    alt={f.name}
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-secondary">
                     <Users className="h-10 w-10" />
@@ -209,16 +340,24 @@ function Explore() {
 
       {/* Projects */}
       <section className="mx-auto mt-20 max-w-7xl px-6">
-        <p id="projects" className="font-display text-xl text-primary">Student Projects</p>
+        <p id="projects" className="font-display text-xl text-primary">
+          Student Projects
+        </p>
         <h2 className="font-display text-5xl text-secondary">A wall of ideas that shipped.</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
-            <motion.div key={p.title} whileHover={{ y: -8, rotate: 0 }}
+            <motion.div
+              key={p.title}
+              whileHover={{ y: -8, rotate: 0 }}
+              whileTap={{ y: -4, scale: 0.97 }}
               style={{ background: p.tint, transform: `rotate(${p.rot})` }}
-              className="relative rounded-md p-6 shadow-[2px_10px_28px_-12px_rgba(0,0,0,0.28)]">
+              className="relative rounded-md p-6 shadow-[2px_10px_28px_-12px_rgba(0,0,0,0.28)]"
+            >
               <span className="tape left-1/2 -top-3 -translate-x-1/2 rotate-[-4deg]" />
               <h3 className="font-display text-3xl text-secondary">{p.title}</h3>
-              <p className="mt-2 text-sm text-secondary/70">Built by IT students in a semester sprint.</p>
+              <p className="mt-2 text-sm text-secondary/70">
+                Built by IT students in a semester sprint.
+              </p>
             </motion.div>
           ))}
         </div>
@@ -234,16 +373,25 @@ function Explore() {
           ].map((p) => (
             <div key={p.label} className="rounded-2xl bg-white p-6">
               <p.icon className="h-6 w-6 text-primary" />
-              <p className="mt-4 text-sm uppercase tracking-widest text-muted-foreground">{p.label}</p>
+              <p className="mt-4 text-sm uppercase tracking-widest text-muted-foreground">
+                {p.label}
+              </p>
               <p className="mt-1 font-display text-5xl text-secondary">{p.value}</p>
             </div>
           ))}
           <div className="md:col-span-3">
             <p className="text-sm text-muted-foreground">Top recruiters</p>
             <div className="mt-3 flex flex-wrap gap-3">
-              {["Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Amazon", "Deloitte"].map((r) => (
-                <span key={r} className="rounded-full border border-border bg-white px-4 py-1.5 text-sm font-medium text-secondary">{r}</span>
-              ))}
+              {["Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Amazon", "Deloitte"].map(
+                (r) => (
+                  <span
+                    key={r}
+                    className="rounded-full border border-border bg-white px-4 py-1.5 text-sm font-medium text-secondary"
+                  >
+                    {r}
+                  </span>
+                ),
+              )}
             </div>
           </div>
         </div>
@@ -255,9 +403,13 @@ function Explore() {
         <h2 className="font-display text-5xl text-secondary">Notes from the corridor.</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {testimonials.map((t, i) => (
-            <motion.div key={t.name} whileHover={{ y: -6 }}
+            <motion.div
+              key={t.name}
+              whileHover={{ y: -6 }}
+              whileTap={{ y: -3, scale: 0.97 }}
               style={{ background: t.tint, transform: `rotate(${i % 2 ? 1.2 : -1.2}deg)` }}
-              className="relative rounded-md p-5 shadow-[2px_10px_24px_-12px_rgba(0,0,0,0.25)]">
+              className="relative rounded-md p-5 shadow-[2px_10px_24px_-12px_rgba(0,0,0,0.25)]"
+            >
               <span className="tape left-1/2 -top-3 -translate-x-1/2 rotate-[-6deg]" />
               <p className="font-display text-lg leading-snug text-secondary">“{t.quote}”</p>
               <p className="mt-3 text-sm text-secondary/70">— {t.name}</p>
@@ -271,17 +423,36 @@ function Explore() {
         <div className="grid gap-6 rounded-3xl paper-card p-8 md:grid-cols-2">
           <div>
             <p className="font-display text-xl text-primary">Get in touch</p>
-            <h2 className="font-display text-5xl text-secondary">Come say hi to the IT Dept.</h2>
+            <h2 className="font-display text-5xl text-secondary">Come say hi to CSC.</h2>
             <ul className="mt-6 space-y-3 text-secondary/80">
-              <li className="flex items-start gap-3"><MapPin className="mt-0.5 h-5 w-5 text-primary" />
-                Department of Information Technology, Chandrabhan Sharma College, Powai-Vihar, Powai, Mumbai — 400076</li>
-              <li className="flex items-center gap-3"><Mail className="h-5 w-5 text-primary" />itdept@cschcollege.edu.in</li>
-              <li className="flex items-center gap-3"><Phone className="h-5 w-5 text-primary" />+91 98765 43210</li>
-              <li className="flex items-center gap-3"><span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">⏱</span> Mon – Fri · 9:00 AM to 6:00 PM</li>
+              <li className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-5 w-5 text-primary" />
+                Department of Information Technology, Chandrabhan Sharma College, Powai-Vihar,
+                Powai, Mumbai — 400076
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="h-5 w-5 text-primary" />
+                itdept@cschcollege.edu.in
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="h-5 w-5 text-primary" />
+                +91 98765 43210
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">
+                  ⏱
+                </span>{" "}
+                Mon – Fri · 9:00 AM to 6:00 PM
+              </li>
             </ul>
           </div>
           <div className="relative overflow-hidden rounded-2xl border border-border bg-muted">
-            <iframe title="CSC map" src="https://www.openstreetmap.org/export/embed.html?bbox=72.899%2C19.114%2C72.907%2C19.120&layer=mapnik&marker=19.116556%2C72.902717" className="h-full min-h-[280px] w-full" loading="lazy" />
+            <iframe
+              title="CSC map"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=72.899%2C19.114%2C72.907%2C19.120&layer=mapnik&marker=19.116556%2C72.902717"
+              className="h-full min-h-[280px] w-full"
+              loading="lazy"
+            />
           </div>
         </div>
       </section>
