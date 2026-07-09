@@ -59,10 +59,15 @@ const labs = [
 ];
 
 const faculty = [
-  { id: "neha-sharma",  name: "Dr. Neha Sharma", role: "HOD · IT Dept.", qual: "Ph.D. (CSE)", tint: "#FFE7B8" },
-  { id: "amit-verma",   name: "Prof. Amit Verma", role: "Assistant Professor", qual: "M.Tech", tint: "#CDEBFF" },
-  { id: "priya-nair",   name: "Prof. Priya Nair", role: "Assistant Professor", qual: "B.Tech", tint: "#D8F5C4" },
-  { id: "rahul-mehta",  name: "Prof. Rahul Mehta", role: "Assistant Professor", qual: "M.Tech", tint: "#FFD6C0" },
+   { id: "Vaishali Rajput",   name: "Dr. Vaishali Rajput", role: "I/C Principal, SDC Director", qual: "Ph.D, M.Com", tint: "#D8F5C4" },
+  { id: "Sandeep Vishwakarma",  name: "Mr. Sandeep Vishwakarma", role: "HOD · IT Dept.", qual: "B.Sc. (Physics), MCA, MBA, Ph.D. Scholar", tint: "#FFE7B8" },
+  { id: "Arvind Singh",  name: "Mr. Arvind Singh", role: "Coordinator-B.Sc.IT, B.Sc. CS & DF", qual: "M.Sc. (Computer Science)", tint: "#FFD6C0" },
+  { id: "Sailaja Tiwari",   name: "Ms. Sailaja Tiwari", role: "Assistant Professor", qual: "M.Sc.IT", tint: "#CDEBFF" },
+  { id: "Dheeraj Vishwakarma",  name: "Mr. Dheeraj Vishwakarma", role: "Assistant Professor", qual: "MSc(Statistics), B.Ed", tint: "#FFD6C0" },
+  { id: "Vani Bandi",   name: "Ms. Vani Bandi", role: "Assistant Professor", qual: "MSc(Statistics)", tint: "#CDEBFF" },
+  { id: "Sahil Bhalekar",   name: "Mr. Sahil Bhalekar", role: "Assistant Professor", qual: "Mr. Sahil Bhalekar", tint: "#CDEBFF" },
+  
+  
 ];
 
 const projects = [
