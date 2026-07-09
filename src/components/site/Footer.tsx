@@ -17,8 +17,8 @@ export function Footer() {
               engineers, researchers and founders.
             </p>
             <div className="mt-6 flex gap-3">
-              {[Instagram, Linkedin, Youtube].map((I, i) => (
-                <a key={i} href="#" aria-label="social" className="grid h-10 w-10 place-items-center rounded-full border border-border bg-white hover:border-primary hover:text-primary">
+              {[Instagram, Youtube].map((I, i) => (
+                <a key={i} href="https://www.instagram.com/chandrabhansharma.college?igsh=cnNjeWN3aWhhNHA=" aria-label="social" className="grid h-10 w-10 place-items-center rounded-full border border-border bg-white hover:border-primary hover:text-primary">
                   <I className="h-4 w-4" />
                 </a>
               ))}
