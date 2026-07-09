@@ -83,8 +83,11 @@ const testimonials = [
 
 function Explore() {
   const [facultyPhotos, setFacultyPhotos] = useState<Record<string, string>>({});
+  const [labPhotos, setLabPhotos]         = useState<string[]>([]);
+  const [campusPhoto, setCampusPhoto]     = useState<string>("");
 
   useEffect(() => {
+    // Faculty photos
     (async () => {
       const result: Record<string, string> = {};
       for (const m of faculty) {
@@ -94,6 +97,24 @@ function Explore() {
         }
       }
       setFacultyPhotos(result);
+    })();
+
+    // Lab photos
+    (async () => {
+      const { data } = await supabase.storage.from("labs").list("", { sortBy: { column: "created_at", order: "asc" } });
+      const items = (data ?? []).filter(f => !f.name.startsWith("."));
+      if (items.length > 0) {
+        setLabPhotos(items.map(f => supabase.storage.from("labs").getPublicUrl(f.name).data.publicUrl));
+      }
+    })();
+
+    // Campus hero
+    (async () => {
+      const { data } = await supabase.storage.from("slideshow").list("", { sortBy: { column: "created_at", order: "asc" } });
+      const items = (data ?? []).filter(f => !f.name.startsWith("."));
+      if (items.length > 0) {
+        setCampusPhoto(supabase.storage.from("slideshow").getPublicUrl(items[0].name).data.publicUrl);
+      }
     })();
   }, []);
 
