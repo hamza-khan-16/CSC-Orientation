@@ -165,8 +165,8 @@ const projects = [
 
 const testimonials = [
   {
-    name: "Ananya S.",
-    quote: "Orientation was amazing! Got a clear idea about labs, opportunities and my future.",
+    name: "Adarsh S.",
+    quote: "Faculty are amazing! Got a clear idea about labs, opportunities and my future.",
     tint: "#FFF4B8",
   },
   {
@@ -176,11 +176,11 @@ const testimonials = [
   },
   {
     name: "Mehak T.",
-    quote: "Best department with great exposure and practical learning.",
+    quote: "Best departments with great exposure and practical learning.",
     tint: "#CDEBFF",
   },
   {
-    name: "Kabir J.",
+    name: "Hamza K.",
     quote: "Loved the labs — got hands-on with AI hardware from day one.",
     tint: "#FFD6C0",
   },
