@@ -47,7 +47,7 @@ export const Route = createFileRoute("/explore")({
 const stats = [
   { n: 850, s: "+", label: "Students" },
   { n: 32, s: "+", label: "Faculty" },
-  { n: 95, s: "%", label: "Placement" },
+  { n: 85, s: "%", label: "Placement" },
   { n: 50, s: "+", label: "Projects" },
   { n: 20, s: "+", label: "Recruiters" },
 ];
@@ -156,11 +156,11 @@ const faculty = [
 
 const projects = [
   { title: "Smart Attendance System", tint: "#FFF4B8", rot: "-2deg" },
-  { title: "Virtual Assistant Chatbot", tint: "#FFD6C0", rot: "1.5deg" },
+  { title: "Assistant Chatbot", tint: "#FFD6C0", rot: "1.5deg" },
   { title: "AI Image Classifier", tint: "#D8F5C4", rot: "-1deg" },
   { title: "College Event Manager", tint: "#FFDDE7", rot: "2deg" },
   { title: "Real-time Chat App", tint: "#CDEBFF", rot: "-1.5deg" },
-  { title: "Campus Navigator VR", tint: "#E8DDFF", rot: "1deg" },
+  { title: "Air Quality Index Monitor", tint: "#E8DDFF", rot: "1deg" },
 ];
 
 const testimonials = [
@@ -367,9 +367,9 @@ function Explore() {
       <section className="mx-auto mt-20 max-w-7xl px-6">
         <div className="grid gap-6 rounded-3xl paper-card p-8 md:grid-cols-3">
           {[
-            { icon: Trophy, label: "Highest Package", value: "₹ 32 LPA" },
-            { icon: Briefcase, label: "Average Package", value: "₹ 6.8 LPA" },
-            { icon: GraduationCap, label: "Placement Rate", value: "95%" },
+            { icon: Trophy, label: "Highest Package", value: "₹ 12.8 LPA" },
+            { icon: Briefcase, label: "Average Package", value: "₹ 4.8 LPA" },
+            { icon: GraduationCap, label: "Placement Rate", value: "85%" },
           ].map((p) => (
             <div key={p.label} className="rounded-2xl bg-white p-6">
               <p.icon className="h-6 w-6 text-primary" />
@@ -382,7 +382,7 @@ function Explore() {
           <div className="md:col-span-3">
             <p className="text-sm text-muted-foreground">Top recruiters</p>
             <div className="mt-3 flex flex-wrap gap-3">
-              {["Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Amazon", "Deloitte"].map(
+              {["Deutsche Bank", "TCS", "Kotak", "NAREDCO", "HDFC Bank", "Sutheerland", "NSE"].map(
                 (r) => (
                   <span
                     key={r}
