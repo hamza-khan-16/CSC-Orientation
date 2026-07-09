@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Sparkles, Users, FlaskConical, Rocket, Star as StarIcon, Maximize2, X } from "lucide-react";
 import QRCode from "qrcode";
+import { supabase } from "@/lib/supabase";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Star, Squiggle, Arrow, Bulb, Plane, Scribble } from "@/components/site/Doodles";
@@ -14,7 +15,7 @@ import campus from "@/assets/campus.jpg";
 
 export const Route = createFileRoute("/")({ component: Index });
 
-const slides = [
+const FALLBACK_SLIDES = [
   { src: labComputer, label: "Computer Lab" },
   { src: labAI, label: "AI Lab" },
   { src: labNetwork, label: "Networking Lab" },
@@ -24,10 +25,26 @@ const slides = [
 
 function Index() {
   const [i, setI] = useState(0);
+  const [slides, setSlides] = useState<{ src: string; label: string }[]>(FALLBACK_SLIDES);
+
+  // Load slideshow images from Supabase, fall back to local assets
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.storage.from("slideshow").list("", { sortBy: { column: "created_at", order: "asc" } });
+      const items = (data ?? []).filter(f => !f.name.startsWith("."));
+      if (items.length > 0) {
+        setSlides(items.map(f => ({
+          src: supabase.storage.from("slideshow").getPublicUrl(f.name).data.publicUrl,
+          label: f.name.replace(/[-_]/g, " ").replace(/\.[^.]+$/, ""),
+        })));
+      }
+    })();
+  }, []);
+
   useEffect(() => {
     const t = setInterval(() => setI((v) => (v + 1) % slides.length), 3500);
     return () => clearInterval(t);
-  }, []);
+  }, [slides]);
 
   return (
     <div className="relative min-h-screen overflow-x-clip bg-background">
@@ -155,7 +172,7 @@ function Index() {
   );
 }
 
-const FEEDBACK_URL = "https://csc-orientation.vercel.app/feedback";
+const FEEDBACK_URL = "https://orientation.cschcollege.edu.in/feedback";
 
 function QRSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

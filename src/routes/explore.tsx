@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Mail, Phone, MapPin, Users, GraduationCap, Trophy, Briefcase, Cpu, Wifi, Shield, Code2, Network } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
+import { supabase } from "@/lib/supabase";
 import { Footer } from "@/components/site/Footer";
 import { Star, Squiggle, Arrow } from "@/components/site/Doodles";
 import labComputer from "@/assets/lab-computer.jpg";
@@ -49,19 +50,19 @@ function Counter({ to, suffix }: { to: number; suffix: string }) {
 }
 
 const labs = [
-  { name: "Computer Lab", icon: Cpu, img: labComputer, note: "60 workstations · dual-boot" },
-  { name: "AI & ML Lab", icon: Star, img: labAI, note: "NVIDIA GPUs · Jupyter cluster" },
-  { name: "Networking Lab", icon: Network, img: labNetwork, note: "Cisco routers · Packet Tracer" },
-  { name: "IoT Lab", icon: Wifi, img: labComputer, note: "Raspberry Pi · Arduino kits" },
-  { name: "Cyber Security Lab", icon: Shield, img: labNetwork, note: "Kali · CTF sandbox" },
-  { name: "Programming Lab", icon: Code2, img: students, note: "Multi-language, 24/7 access" },
+  { name: "Computer Lab", icon: Cpu, fallback: labComputer, note: "60 workstations · dual-boot" },
+  { name: "AI & ML Lab", icon: Star, fallback: labAI, note: "NVIDIA GPUs · Jupyter cluster" },
+  { name: "Networking Lab", icon: Network, fallback: labNetwork, note: "Cisco routers · Packet Tracer" },
+  { name: "IoT Lab", icon: Wifi, fallback: labComputer, note: "Raspberry Pi · Arduino kits" },
+  { name: "Cyber Security Lab", icon: Shield, fallback: labNetwork, note: "Kali · CTF sandbox" },
+  { name: "Programming Lab", icon: Code2, fallback: students, note: "Multi-language, 24/7 access" },
 ];
 
 const faculty = [
-  { name: "Dr. Neha Sharma", role: "HOD · IT Dept.", qual: "Ph.D. (CSE)", tint: "#FFE7B8" },
-  { name: "Prof. Amit Verma", role: "Assistant Professor", qual: "M.Tech", tint: "#CDEBFF" },
-  { name: "Prof. Priya Nair", role: "Assistant Professor", qual: "B.Tech", tint: "#D8F5C4" },
-  { name: "Prof. Rahul Mehta", role: "Assistant Professor", qual: "M.Tech", tint: "#FFD6C0" },
+  { id: "neha-sharma",  name: "Dr. Neha Sharma", role: "HOD · IT Dept.", qual: "Ph.D. (CSE)", tint: "#FFE7B8" },
+  { id: "amit-verma",   name: "Prof. Amit Verma", role: "Assistant Professor", qual: "M.Tech", tint: "#CDEBFF" },
+  { id: "priya-nair",   name: "Prof. Priya Nair", role: "Assistant Professor", qual: "B.Tech", tint: "#D8F5C4" },
+  { id: "rahul-mehta",  name: "Prof. Rahul Mehta", role: "Assistant Professor", qual: "M.Tech", tint: "#FFD6C0" },
 ];
 
 const projects = [
@@ -81,6 +82,21 @@ const testimonials = [
 ];
 
 function Explore() {
+  const [facultyPhotos, setFacultyPhotos] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    (async () => {
+      const result: Record<string, string> = {};
+      for (const m of faculty) {
+        const { data } = await supabase.storage.from("faculty").list("", { search: m.id });
+        if (data && data.length > 0) {
+          result[m.id] = supabase.storage.from("faculty").getPublicUrl(data[0].name).data.publicUrl;
+        }
+      }
+      setFacultyPhotos(result);
+    })();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -100,7 +116,7 @@ function Explore() {
           </div>
           <div className="relative">
             <span className="tape left-8 -top-3 rotate-[-6deg]" />
-            <img src={campus} alt="CSC campus" width={1280} height={960} className="aspect-[16/10] w-full rounded-2xl object-cover shadow-xl" />
+            <img src={campusPhoto || campus} alt="CSC campus" width={1280} height={960} className="aspect-[16/10] w-full rounded-2xl object-cover shadow-xl" />
             <Arrow className="absolute -bottom-10 -left-6 hidden h-16 w-32 text-secondary/50 sm:block" />
           </div>
         </div>
@@ -128,10 +144,10 @@ function Explore() {
           <Squiggle className="hidden h-6 w-40 text-primary sm:block" />
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {labs.map((l) => (
+          {labs.map((l, i) => (
             <motion.div key={l.name} whileHover={{ y: -6, rotate: -0.5 }} className="paper-card overflow-hidden">
               <div className="relative aspect-[16/10] overflow-hidden">
-                <img src={l.img} alt={l.name} width={1280} height={960} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
+                <img src={labPhotos[i] ?? l.fallback} alt={l.name} width={1280} height={960} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2">
@@ -153,8 +169,14 @@ function Explore() {
           {faculty.map((f, i) => (
             <motion.div key={f.name} whileHover={{ y: -6, rotate: i % 2 ? 1 : -1 }} className="relative paper-card p-6 text-center">
               <span className="tape left-1/2 -top-3 -translate-x-1/2 rotate-[-6deg]" />
-              <div className="mx-auto grid h-24 w-24 place-items-center rounded-full text-secondary" style={{ background: f.tint }}>
-                <Users className="h-10 w-10" />
+              <div className="mx-auto h-24 w-24 overflow-hidden rounded-full" style={{ background: f.tint }}>
+                {facultyPhotos[f.id] ? (
+                  <img src={facultyPhotos[f.id]} alt={f.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-secondary">
+                    <Users className="h-10 w-10" />
+                  </div>
+                )}
               </div>
               <h3 className="mt-4 font-display text-2xl text-secondary">{f.name}</h3>
               <p className="text-sm text-muted-foreground">{f.role}</p>

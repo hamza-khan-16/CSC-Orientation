@@ -1,7 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Star as StarIcon, ThumbsUp, Smile, Meh, Frown, PartyPopper } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Star as StarIcon, ThumbsUp, Smile, Meh, Frown, PartyPopper, Loader2 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Squiggle } from "@/components/site/Doodles";
@@ -28,7 +29,29 @@ function FeedbackPage() {
   const nav = useNavigate();
   const [i, setI] = useState(0);
   const [data, setData] = useState<Data>(initial);
+  const [submitting, setSubmitting] = useState(false);
   const set = <K extends keyof Data>(k: K, v: Data[K]) => setData((d) => ({ ...d, [k]: v }));
+
+  const handleSubmit = async () => {
+    if (!canNext()) return;
+    setSubmitting(true);
+    try {
+      await supabase.from("feedback").insert([{
+        name: data.name || "Anonymous",
+        orientation: data.orientation,
+        faculty: data.faculty,
+        lab: data.lab,
+        facilities: data.facilities,
+        suggestions: data.suggestions,
+        recommend: data.recommend,
+      }]);
+    } catch (_) {
+      // Still navigate even if save fails
+    } finally {
+      setSubmitting(false);
+      nav({ to: "/thank-you" });
+    }
+  };
 
   const canNext = () => {
     switch (i) {
@@ -163,9 +186,9 @@ function FeedbackPage() {
                   Next <ArrowRight className="h-4 w-4" />
                 </button>
               ) : (
-                <button onClick={() => canNext() && nav({ to: "/thank-you" })} disabled={!canNext()}
+                <button onClick={handleSubmit} disabled={!canNext() || submitting}
                   className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground btn-magnetic disabled:opacity-40">
-                  Submit <PartyPopper className="h-4 w-4" />
+                  {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <><span>Submit</span><PartyPopper className="h-4 w-4" /></>}
                 </button>
               )}
             </div>
