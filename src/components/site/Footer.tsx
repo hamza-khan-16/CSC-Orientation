@@ -24,7 +24,6 @@ export function Footer() {
               founders.
             </p>
             <div className="mt-6 flex gap-3">
-<<<<<<< HEAD
               {[Instagram].map((I, i) => (
                 <a
                   key={i}
@@ -32,10 +31,6 @@ export function Footer() {
                   aria-label="social"
                   className="grid h-10 w-10 place-items-center rounded-full border border-border bg-white hover:border-primary hover:text-primary"
                 >
-=======
-              {[ Instagram].map((I, i) => (
-                <a key={i} href="https://www.instagram.com/chandrabhansharma.college?igsh=cnNjeWN3aWhhNHA=" aria-label="social" className="grid h-10 w-10 place-items-center rounded-full border border-border bg-white hover:border-primary hover:text-primary">
->>>>>>> 45fd08b0aa9fd7e1d06db408977c9bcdc88ef5ee
                   <I className="h-4 w-4" />
                 </a>
               ))}
