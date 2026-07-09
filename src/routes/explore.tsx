@@ -165,7 +165,7 @@ const projects = [
 
 const testimonials = [
   {
-    name: "Adarsh S.",
+    name: "Adarsh P.",
     quote: "Faculty are amazing! Got a clear idea about labs, opportunities and my future.",
     tint: "#FFF4B8",
   },
