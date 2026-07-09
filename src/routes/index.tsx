@@ -78,13 +78,7 @@ function Index() {
 
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
           <div className="relative">
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-white/70 px-3 py-1 text-xs font-medium uppercase tracking-widest text-secondary/70"
-            >
-            
-            </motion.p>
+           
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
