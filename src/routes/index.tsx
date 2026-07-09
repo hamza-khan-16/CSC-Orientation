@@ -72,7 +72,7 @@ function Index() {
             >
               Welcome to <br />
               <span className="relative inline-block">
-                <span className="ink-underline px-1 text-primary">IT Department</span>
+                <span className="ink-underline px-1 text-primary">Chandrabhan Sharma College</span>
               </span><br />
               Orientation
             </motion.h1>
