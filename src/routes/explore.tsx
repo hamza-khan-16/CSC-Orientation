@@ -89,6 +89,7 @@ const labs = [
 ];
 
 const faculty = [
+<<<<<<< HEAD
   {
     id: "Vaishali Rajput",
     name: "Dr. Vaishali Rajput",
@@ -152,6 +153,17 @@ const faculty = [
     qual: "Animation & VFX Expert",
     tint: "#CDEBFF",
   },
+=======
+   { id: "Vaishali Rajput",   name: "Dr. Vaishali Rajput", role: "I/C Principal, SDC Director", qual: "Ph.D, M.Com", tint: "#D8F5C4" },
+  { id: "Sandeep Vishwakarma",  name: "Mr. Sandeep Vishwakarma", role: "HOD · IT Dept.", qual: "B.Sc. (Physics), MCA, MBA, Ph.D. Scholar", tint: "#FFE7B8" },
+  { id: "Arvind Singh",  name: "Mr. Arvind Singh", role: "Coordinator-B.Sc.IT, B.Sc. CS & DF", qual: "M.Sc. (Computer Science)", tint: "#FFD6C0" },
+  { id: "Sailaja Tiwari",   name: "Ms. Sailaja Tiwari", role: "Assistant Professor", qual: "M.Sc.IT", tint: "#CDEBFF" },
+  { id: "Dheeraj Vishwakarma",  name: "Mr. Dheeraj Vishwakarma", role: "Assistant Professor", qual: "MSc(Statistics), B.Ed", tint: "#FFD6C0" },
+  { id: "Vani Bandi",   name: "Ms. Vani Bandi", role: "Assistant Professor", qual: "MSc(Statistics)", tint: "#CDEBFF" },
+  { id: "Sahil Bhalekar",   name: "Mr. Sahil Bhalekar", role: "Assistant Professor", qual: "Mr. Sahil Bhalekar", tint: "#CDEBFF" },
+  
+  
+>>>>>>> 45fd08b0aa9fd7e1d06db408977c9bcdc88ef5ee
 ];
 
 const projects = [

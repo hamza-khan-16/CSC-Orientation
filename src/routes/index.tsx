@@ -95,8 +95,12 @@ function Index() {
               Welcome to <br />
               <span className="relative inline-block">
                 <span className="ink-underline px-1 text-primary">Chandrabhan Sharma College</span>
+<<<<<<< HEAD
               </span>
               <br />
+=======
+              </span><br />
+>>>>>>> 45fd08b0aa9fd7e1d06db408977c9bcdc88ef5ee
               Orientation
             </motion.h1>
 
