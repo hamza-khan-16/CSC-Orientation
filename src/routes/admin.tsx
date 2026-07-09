@@ -34,7 +34,9 @@ import {
   ChevronUp,
   Star,
   X,
+  Download,
 } from "lucide-react";
+import * as XLSX from "xlsx";
 import { supabase, type FeedbackRow, COURSES } from "@/lib/supabase";
 
 // ─── env credentials ──────────────────────────────────────────────────────────
@@ -50,6 +52,37 @@ const COLORS = ["#F7941D", "#2D2A22", "#CDEBFF", "#D8F5C4", "#FFD6C0", "#FFDDE7"
 
 function avg(arr: number[]) {
   return arr.length ? +(arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2) : 0;
+}
+
+function exportFeedbackToExcel(feedback: FeedbackRow[]) {
+  const courseLabel = (id: string) => COURSES.find((c) => c.id === id)?.label ?? id;
+
+  const rows = feedback.map((f) => ({
+    "Submitted At": new Date(f.created_at).toLocaleString("en-IN"),
+    "Name": f.name || "—",
+    "Phone": f.phone || "—",
+    "Course": f.course ? courseLabel(f.course) : "—",
+    "Orientation Rating (1–5)": f.orientation,
+    "Faculty Rating (1–5)": f.faculty,
+    "Lab Experience": f.lab ? f.lab.charAt(0).toUpperCase() + f.lab.slice(1) : "—",
+    "Facilities Score (1–10)": f.facilities,
+    "Would Recommend": f.recommend === "yes" ? "Absolutely" : f.recommend === "maybe" ? "Maybe" : "Not yet",
+    "Suggestions": f.suggestions || "—",
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+
+  // Auto column widths
+  const colWidths = Object.keys(rows[0] ?? {}).map((key) => ({
+    wch: Math.max(key.length, ...rows.map((r) => String((r as Record<string, unknown>)[key] ?? "").length)) + 2,
+  }));
+  ws["!cols"] = colWidths;
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Feedback");
+
+  const date = new Date().toISOString().slice(0, 10);
+  XLSX.writeFile(wb, `CSC_Orientation_Feedback_${date}.xlsx`);
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -534,6 +567,14 @@ function ResponsesTab({
             className="flex items-center gap-1.5 rounded-xl border border-[oklch(0.88_0.01_60)] bg-white px-3 py-1.5 text-xs font-medium text-[#2D2A22]/70 transition hover:bg-[#FAF8F4]"
           >
             <RefreshCw className="h-3.5 w-3.5" /> Refresh
+          </button>
+          <button
+            onClick={() => exportFeedbackToExcel(feedback)}
+            disabled={feedback.length === 0}
+            className="flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-40"
+            title={feedback.length === 0 ? "No data to export" : `Export ${feedback.length} responses to Excel`}
+          >
+            <Download className="h-3.5 w-3.5" /> Export Excel
           </button>
         </div>
       </div>
