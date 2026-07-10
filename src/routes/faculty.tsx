@@ -156,9 +156,9 @@ function FacultyPage() {
                   </h2>
                   <p className="mt-1 text-sm font-medium text-primary">{m.role}</p>
                   {m.degree && (
-                    <p className="mt-2 flex items-center justify-center gap-1 text-xs text-secondary/60">
-                      <GraduationCap className="h-3.5 w-3.5 flex-shrink-0" />
-                      {m.degree}
+                    <p className="mt-2 flex items-start justify-center gap-1 text-xs text-secondary/60">
+                      <GraduationCap className="mt-[1px] h-3.5 w-3.5 flex-shrink-0" />
+                      <span className="text-center leading-snug">{m.degree}</span>
                     </p>
                   )}
                 </motion.div>

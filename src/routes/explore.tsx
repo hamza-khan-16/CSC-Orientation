@@ -108,8 +108,9 @@ function FacultyCard({ m, i }: { m: FacultyMember; i: number }) {
       <h3 className="mt-4 font-display text-2xl text-secondary">{m.name}</h3>
       <p className="text-sm text-muted-foreground">{m.role}</p>
       {m.degree && (
-        <p className="mt-1 flex items-center justify-center gap-1 text-xs text-secondary/60">
-          <GraduationCap className="h-3 w-3" /> {m.degree}
+        <p className="mt-1 flex items-start justify-center gap-1 text-xs text-secondary/60">
+          <GraduationCap className="mt-[1px] h-3 w-3 flex-shrink-0" />
+          <span className="text-center leading-snug">{m.degree}</span>
         </p>
       )}
     </motion.div>
