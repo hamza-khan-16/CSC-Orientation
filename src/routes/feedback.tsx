@@ -6,10 +6,6 @@ import {
   ArrowRight,
   Check,
   Star as StarIcon,
-  ThumbsUp,
-  Smile,
-  Meh,
-  Frown,
   PartyPopper,
   Loader2,
   Phone,
@@ -38,8 +34,6 @@ type Data = {
   phone: string;
   course: string;
   orientation: number;
-  faculty: number;
-  lab: string;
   facilities: number;
   suggestions: string;
   recommend: "yes" | "maybe" | "no" | "";
@@ -49,8 +43,6 @@ const initial: Data = {
   phone: "",
   course: "",
   orientation: 0,
-  faculty: 0,
-  lab: "",
   facilities: 5,
   suggestions: "",
   recommend: "",
@@ -61,8 +53,6 @@ const steps = [
   "Phone number",
   "Your course",
   "Rate orientation",
-  "Rate faculty",
-  "Lab experience",
   "Campus facilities",
   "Suggestions",
   "Recommend us?",
@@ -85,8 +75,6 @@ function FeedbackPage() {
           phone: data.phone || "",
           course: data.course || "",
           orientation: data.orientation,
-          faculty: data.faculty,
-          lab: data.lab,
           facilities: data.facilities,
           suggestions: data.suggestions,
           recommend: data.recommend,
@@ -110,15 +98,11 @@ function FeedbackPage() {
         return data.course !== "";
       case 3:
         return data.orientation > 0;
-      case 4:
-        return data.faculty > 0;
-      case 5:
-        return data.lab !== "";
+      case 4: // campus facilities (slider, always valid)
+        return true;
+      case 5: // suggestions (optional)
+        return true;
       case 6:
-        return true;
-      case 7:
-        return true;
-      case 8:
         return data.recommend !== "";
     }
     return false;
@@ -226,15 +210,14 @@ function FeedbackPage() {
                       ))}
                     </div>
                   )}
-                  {(i === 3 || i === 4) && (
+                  {i === 3 && (
                     <div className="flex flex-wrap items-center gap-3">
                       {[1, 2, 3, 4, 5].map((n) => {
-                        const val = i === 3 ? data.orientation : data.faculty;
-                        const active = n <= val;
+                        const active = n <= data.orientation;
                         return (
                           <button
                             key={n}
-                            onClick={() => (i === 3 ? set("orientation", n) : set("faculty", n))}
+                            onClick={() => set("orientation", n)}
                             className="transition-transform hover:scale-110"
                           >
                             <StarIcon
@@ -244,34 +227,11 @@ function FeedbackPage() {
                         );
                       })}
                       <span className="ml-3 font-display text-3xl text-secondary/70">
-                        {
-                          ["", "meh", "ok", "good", "great", "brilliant"][
-                            i === 3 ? data.orientation : data.faculty
-                          ]
-                        }
+                        {["", "meh", "ok", "good", "great", "brilliant"][data.orientation]}
                       </span>
                     </div>
                   )}
-                  {i === 5 && (
-                    <div className="grid gap-3 sm:grid-cols-4">
-                      {[
-                        { key: "excellent", label: "Excellent", I: ThumbsUp },
-                        { key: "good", label: "Good", I: Smile },
-                        { key: "average", label: "Average", I: Meh },
-                        { key: "needs", label: "Needs work", I: Frown },
-                      ].map(({ key, label, I }) => (
-                        <button
-                          key={key}
-                          onClick={() => set("lab", key)}
-                          className={`flex flex-col items-center gap-2 rounded-xl border p-5 transition ${data.lab === key ? "border-primary bg-primary/10" : "border-border bg-white/60 hover:border-primary/60"}`}
-                        >
-                          <I className="h-8 w-8 text-primary" />
-                          <span className="text-sm font-medium text-secondary">{label}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                  {i === 6 && (
+                  {i === 4 && (
                     <div>
                       <input
                         type="range"
@@ -290,7 +250,7 @@ function FeedbackPage() {
                       </div>
                     </div>
                   )}
-                  {i === 7 && (
+                  {i === 5 && (
                     <textarea
                       value={data.suggestions}
                       onChange={(e) => set("suggestions", e.target.value)}
@@ -299,7 +259,7 @@ function FeedbackPage() {
                       className="w-full resize-none bg-transparent font-display text-2xl leading-9 text-secondary outline-none placeholder:text-secondary/25"
                     />
                   )}
-                  {i === 8 && (
+                  {i === 6 && (
                     <div className="grid gap-3 sm:grid-cols-3">
                       {[
                         { k: "yes", label: "Absolutely", emoji: "🎉" },

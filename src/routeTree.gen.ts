@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as FeedbackRouteImport } from './routes/feedback'
+import { Route as FacultyRouteImport } from './routes/faculty'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const ThankYouRoute = ThankYouRouteImport.update({
 const FeedbackRoute = FeedbackRouteImport.update({
   id: '/feedback',
   path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FacultyRoute = FacultyRouteImport.update({
+  id: '/faculty',
+  path: '/faculty',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExploreRoute = ExploreRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/explore': typeof ExploreRoute
+  '/faculty': typeof FacultyRoute
   '/feedback': typeof FeedbackRoute
   '/thank-you': typeof ThankYouRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/explore': typeof ExploreRoute
+  '/faculty': typeof FacultyRoute
   '/feedback': typeof FeedbackRoute
   '/thank-you': typeof ThankYouRoute
 }
@@ -60,21 +68,31 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/explore': typeof ExploreRoute
+  '/faculty': typeof FacultyRoute
   '/feedback': typeof FeedbackRoute
   '/thank-you': typeof ThankYouRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/explore' | '/feedback' | '/thank-you'
+  fullPaths:
+    '/' | '/admin' | '/explore' | '/faculty' | '/feedback' | '/thank-you'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/explore' | '/feedback' | '/thank-you'
-  id: '__root__' | '/' | '/admin' | '/explore' | '/feedback' | '/thank-you'
+  to: '/' | '/admin' | '/explore' | '/faculty' | '/feedback' | '/thank-you'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/explore'
+    | '/faculty'
+    | '/feedback'
+    | '/thank-you'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   ExploreRoute: typeof ExploreRoute
+  FacultyRoute: typeof FacultyRoute
   FeedbackRoute: typeof FeedbackRoute
   ThankYouRoute: typeof ThankYouRoute
 }
@@ -93,6 +111,13 @@ declare module '@tanstack/react-router' {
       path: '/feedback'
       fullPath: '/feedback'
       preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faculty': {
+      id: '/faculty'
+      path: '/faculty'
+      fullPath: '/faculty'
+      preLoaderRoute: typeof FacultyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/explore': {
@@ -123,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   ExploreRoute: ExploreRoute,
+  FacultyRoute: FacultyRoute,
   FeedbackRoute: FeedbackRoute,
   ThankYouRoute: ThankYouRoute,
 }

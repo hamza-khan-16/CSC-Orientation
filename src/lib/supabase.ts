@@ -13,20 +13,37 @@ export type FeedbackRow = {
   phone: string;
   course: string;
   orientation: number;
-  faculty: number;
-  lab: string;
   facilities: number;
   suggestions: string;
   recommend: "yes" | "maybe" | "no";
 };
 
 export const COURSES = [
+  // Science / Computer
   { id: "bscit", label: "B.Sc.IT", sub: "Information Technology" },
   { id: "bscds", label: "B.Sc.DS", sub: "Data Science" },
   { id: "bscaiml", label: "B.Sc.(AI & ML)", sub: "Artificial Intelligence & Machine Learning" },
   { id: "bsccsdf", label: "B.Sc.(CS & DF)", sub: "Cyber Security & Digital Forensics" },
   { id: "bscvfx", label: "B.Sc.(VFX)", sub: "Animation & Visual Effects" },
   { id: "bca", label: "BCA", sub: "Computer Applications" },
+  // Commerce / Arts
+  { id: "bcom", label: "B.COM", sub: "Commerce" },
+  { id: "baf", label: "BAF", sub: "Accounting & Finance" },
+  { id: "bbi", label: "BBI", sub: "Banking & Insurance" },
+  { id: "bfm", label: "BFM", sub: "Financial Markets" },
+  { id: "bammc", label: "BAMMC", sub: "Multimedia & Mass Communication" },
+  { id: "bms", label: "BMS", sub: "Management Studies" },
 ] as const;
 
 export type CourseId = (typeof COURSES)[number]["id"];
+
+export type FacultyMember = {
+  id: string;
+  name: string;
+  role: string;
+  degree: string;
+  tint: string;
+  sort_order: number;
+  photo_url?: string | null;
+  is_default: boolean;
+};

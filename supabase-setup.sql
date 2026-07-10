@@ -9,18 +9,22 @@ create table if not exists public.feedback (
   created_at    timestamptz default now(),
   name          text,
   phone         text,
-  course        text check (course in ('bscit','bscds','bscaiml','bsccsdf','bscvfx','bca')),
+  course        text check (course in (
+                  'bscit','bscds','bscaiml','bsccsdf','bscvfx','bca',
+                  'bcom','baf','bbi','bfm','bammc','bms'
+                )),
   orientation   int2 check (orientation between 1 and 5),
-  faculty       int2 check (faculty between 1 and 5),
-  lab           text check (lab in ('excellent','good','average','needs')),
   facilities    int2 check (facilities between 1 and 10),
   suggestions   text,
   recommend     text check (recommend in ('yes','maybe','no'))
 );
 
--- If upgrading an existing table, run these migrations:
--- alter table public.feedback add column if not exists phone text;
--- alter table public.feedback add column if not exists course text check (course in ('bscit','bscds','bscaiml','bsccsdf','bscvfx','bca'));
+-- If upgrading an existing table from the previous schema, run these migrations:
+-- alter table public.feedback drop column if exists faculty;
+-- alter table public.feedback drop column if exists lab;
+-- alter table public.feedback drop constraint if exists feedback_course_check;
+-- alter table public.feedback add constraint feedback_course_check
+--   check (course in ('bscit','bscds','bscaiml','bsccsdf','bscvfx','bca','bcom','baf','bbi','bfm','bammc','bms'));
 
 -- Enable Row Level Security
 alter table public.feedback enable row level security;
@@ -98,3 +102,47 @@ create policy "Anon delete faculty"
   on storage.objects for delete
   to anon
   using (bucket_id = 'faculty');
+
+-- ─── Faculty Members table ────────────────────────────────────────────────────
+-- Run this in your Supabase SQL editor to create the faculty_members table.
+-- The "faculty" storage bucket already exists and is reused for photos.
+
+create table if not exists public.faculty_members (
+  id          uuid primary key default gen_random_uuid(),
+  name        text not null,
+  role        text not null,
+  degree      text,
+  tint        text default '#CDEBFF',
+  sort_order  int default 0,
+  photo_url   text,
+  is_default  boolean default false,
+  created_at  timestamptz default now()
+);
+
+-- Enable public read access
+alter table public.faculty_members enable row level security;
+
+create policy "Public read" on public.faculty_members
+  for select using (true);
+
+create policy "Service role write" on public.faculty_members
+  for all using (auth.role() = 'service_role');
+
+-- Allow anon inserts/deletes for admin panel (uses anon key)
+create policy "Anon write" on public.faculty_members
+  for all using (true) with check (true);
+
+-- ─── Seed default faculty (run once) ─────────────────────────────────────────
+-- These match the original hardcoded faculty. Run after creating the table.
+
+insert into public.faculty_members (name, role, degree, tint, sort_order, is_default) values
+  ('Dr. Vaishali Rajput',    'I/C Principal, SDC Director',           'Ph.D, M.Com',                              '#D8F5C4', 1,  true),
+  ('Mr. Sandeep Vishwakarma','HOD · IT Dept.',                        'B.Sc. (Physics), MCA, MBA, Ph.D. Scholar', '#FFE7B8', 2,  true),
+  ('Mr. Arvind Singh',       'Coordinator-B.Sc.IT, B.Sc. CS & DF',   'M.Sc. (Computer Science)',                 '#FFD6C0', 3,  true),
+  ('Ms. Sailaja Tiwari',     'Assistant Professor',                    'M.Sc.IT',                                  '#CDEBFF', 4,  true),
+  ('Mr. Dheeraj Vishwakarma','Assistant Professor',                    'MSc(Statistics), B.Ed',                   '#FFD6C0', 5,  true),
+  ('Ms. Vani Bandi',         'Assistant Professor',                    'MSc(Statistics)',                          '#CDEBFF', 6,  true),
+  ('Mr. Sahil Bhalekar',     'Assistant Professor',                    'MCA',                                      '#CDEBFF', 7,  true),
+  ('Mr. Priyam Chavan',      'Assistant Professor',                    'M.Sc.IT',                                  '#CDEBFF', 8,  true),
+  ('Mr. Vikesh Kumar Singh', 'Assistant Professor',                    'Animation & VFX Expert',                   '#CDEBFF', 9,  true)
+on conflict do nothing;

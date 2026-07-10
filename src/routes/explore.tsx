@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import {
@@ -14,9 +14,10 @@ import {
   Shield,
   Code2,
   Network,
+  ArrowRight,
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
-import { supabase } from "@/lib/supabase";
+import { supabase, type FacultyMember } from "@/lib/supabase";
 import { Footer } from "@/components/site/Footer";
 import { Star, Squiggle, Arrow } from "@/components/site/Doodles";
 import labComputer from "@/assets/lab-computer.jpg";
@@ -30,16 +31,9 @@ export const Route = createFileRoute("/explore")({
   head: () => ({
     meta: [
       { title: "Explore CSC · Chandrabhan Sharma College" },
-      {
-        name: "description",
-        content:
-          "Meet Chandrabhan Sharma College: faculty, labs, projects, placements and achievements.",
-      },
+      { name: "description", content: "Meet Chandrabhan Sharma College: faculty, labs, projects, placements and achievements." },
       { property: "og:title", content: "Explore Chandrabhan Sharma College" },
-      {
-        property: "og:description",
-        content: "Faculty, labs, projects and placements at Chandrabhan Sharma College.",
-      },
+      { property: "og:description", content: "Faculty, labs, projects and placements at Chandrabhan Sharma College." },
     ],
   }),
 });
@@ -66,92 +60,16 @@ function Counter({ to, suffix }: { to: number; suffix: string }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [to]);
-  return (
-    <span className="font-num">
-      {n}
-      {suffix}
-    </span>
-  );
+  return <span className="font-num">{n}{suffix}</span>;
 }
 
 const labs = [
   { name: "Computer Lab", icon: Cpu, fallback: labComputer, note: "60 workstations · dual-boot" },
   { name: "AI & ML Lab", icon: Star, fallback: labAI, note: "NVIDIA GPUs · Jupyter cluster" },
-  {
-    name: "Networking Lab",
-    icon: Network,
-    fallback: labNetwork,
-    note: "Cisco routers · Packet Tracer",
-  },
+  { name: "Networking Lab", icon: Network, fallback: labNetwork, note: "Cisco routers · Packet Tracer" },
   { name: "IoT Lab", icon: Wifi, fallback: labComputer, note: "Raspberry Pi · Arduino kits" },
   { name: "Cyber Security Lab", icon: Shield, fallback: labNetwork, note: "Kali · CTF sandbox" },
   { name: "Programming Lab", icon: Code2, fallback: students, note: "Multi-language, 24/7 access" },
-];
-
-const faculty = [
-  {
-    id: "Vaishali Rajput",
-    name: "Dr. Vaishali Rajput",
-    role: "I/C Principal, SDC Director",
-    qual: "Ph.D, M.Com",
-    tint: "#D8F5C4",
-  },
-  {
-    id: "Sandeep Vishwakarma",
-    name: "Mr. Sandeep Vishwakarma",
-    role: "HOD · IT Dept.",
-    qual: "B.Sc. (Physics), MCA, MBA, Ph.D. Scholar",
-    tint: "#FFE7B8",
-  },
-  {
-    id: "Arvind Singh",
-    name: "Mr. Arvind Singh",
-    role: "Coordinator-B.Sc.IT, B.Sc. CS & DF",
-    qual: "M.Sc. (Computer Science)",
-    tint: "#FFD6C0",
-  },
-  {
-    id: "Sailaja Tiwari",
-    name: "Ms. Sailaja Tiwari",
-    role: "Assistant Professor",
-    qual: "M.Sc.IT",
-    tint: "#CDEBFF",
-  },
-  {
-    id: "Dheeraj Vishwakarma",
-    name: "Mr. Dheeraj Vishwakarma",
-    role: "Assistant Professor",
-    qual: "MSc(Statistics), B.Ed",
-    tint: "#FFD6C0",
-  },
-  {
-    id: "Vani Bandi",
-    name: "Ms. Vani Bandi",
-    role: "Assistant Professor",
-    qual: "MSc(Statistics)",
-    tint: "#CDEBFF",
-  },
-  {
-    id: "Sahil Bhalekar",
-    name: "Mr. Sahil Bhalekar",
-    role: "Assistant Professor",
-    qual: "MCA",
-    tint: "#CDEBFF",
-  },
-  {
-    id: "Priyam Chavan",
-    name: "Mr. Priyam Chavan",
-    role: "Assistant Professor",
-    qual: "M.Sc.IT",
-    tint: "#CDEBFF",
-  },
-  {
-    id: "Vikesh Kumar Singh",
-    name: "Mr. Vikesh Kumar Singh",
-    role: "Assistant Professor",
-    qual: "Animation & VFX Expert",
-    tint: "#CDEBFF",
-  },
 ];
 
 const projects = [
@@ -164,58 +82,66 @@ const projects = [
 ];
 
 const testimonials = [
-  {
-    name: "Adarsh P.",
-    quote: "Faculty are amazing! Got a clear idea about labs, opportunities and my future.",
-    tint: "#FFF4B8",
-  },
-  {
-    name: "Rohit P.",
-    quote: "The faculty are very supportive and the vibe is just awesome.",
-    tint: "#D8F5C4",
-  },
-  {
-    name: "Mehak T.",
-    quote: "Best departments with great exposure and practical learning.",
-    tint: "#CDEBFF",
-  },
-  {
-    name: "Hamza K.",
-    quote: "Loved the labs — got hands-on with AI hardware from day one.",
-    tint: "#FFD6C0",
-  },
+  { name: "Adarsh P.", quote: "Faculty are amazing! Got a clear idea about labs, opportunities and my future.", tint: "#FFF4B8" },
+  { name: "Rohit P.", quote: "The faculty are very supportive and the vibe is just awesome.", tint: "#D8F5C4" },
+  { name: "Mehak T.", quote: "Best departments with great exposure and practical learning.", tint: "#CDEBFF" },
+  { name: "Hamza K.", quote: "Loved the labs — got hands-on with AI hardware from day one.", tint: "#FFD6C0" },
 ];
 
+function FacultyCard({ m, i }: { m: FacultyMember; i: number }) {
+  return (
+    <motion.div
+      whileHover={{ y: -6, rotate: i % 2 ? 1 : -1 }}
+      whileTap={{ y: -3, scale: 0.97 }}
+      className="relative paper-card p-6 text-center"
+    >
+      <span className="tape left-1/2 -top-3 -translate-x-1/2 rotate-[-6deg]" />
+      <div className="mx-auto h-24 w-24 overflow-hidden rounded-full" style={{ background: m.tint }}>
+        {m.photo_url ? (
+          <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-secondary">
+            <Users className="h-10 w-10" />
+          </div>
+        )}
+      </div>
+      <h3 className="mt-4 font-display text-2xl text-secondary">{m.name}</h3>
+      <p className="text-sm text-muted-foreground">{m.role}</p>
+      {m.degree && (
+        <p className="mt-1 flex items-center justify-center gap-1 text-xs text-secondary/60">
+          <GraduationCap className="h-3 w-3" /> {m.degree}
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
 function Explore() {
-  const [facultyPhotos, setFacultyPhotos] = useState<Record<string, string>>({});
+  const [faculty, setFaculty] = useState<FacultyMember[]>([]);
   const [labPhotos, setLabPhotos] = useState<string[]>([]);
 
   useEffect(() => {
-    // Faculty photos
+    // Load faculty from DB
     (async () => {
-      const result: Record<string, string> = {};
-      for (const m of faculty) {
-        const { data } = await supabase.storage.from("faculty").list("", { search: m.id });
-        if (data && data.length > 0) {
-          result[m.id] = supabase.storage.from("faculty").getPublicUrl(data[0].name).data.publicUrl;
-        }
-      }
-      setFacultyPhotos(result);
+      const { data } = await supabase
+        .from("faculty_members")
+        .select("*")
+        .order("sort_order", { ascending: true });
+      if (data) setFaculty(data as FacultyMember[]);
     })();
 
-    // Lab photos
+    // Lab photos from storage
     (async () => {
-      const { data } = await supabase.storage
-        .from("labs")
-        .list("", { sortBy: { column: "created_at", order: "asc" } });
+      const { data } = await supabase.storage.from("labs").list("", { sortBy: { column: "created_at", order: "asc" } });
       const items = (data ?? []).filter((f) => !f.name.startsWith("."));
       if (items.length > 0) {
-        setLabPhotos(
-          items.map((f) => supabase.storage.from("labs").getPublicUrl(f.name).data.publicUrl),
-        );
+        setLabPhotos(items.map((f) => supabase.storage.from("labs").getPublicUrl(f.name).data.publicUrl));
       }
     })();
   }, []);
+
+  // Show only first 4 on explore page
+  const previewFaculty = faculty.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-background">
@@ -236,27 +162,19 @@ function Explore() {
           </div>
           <div className="relative">
             <span className="tape left-8 -top-3 rotate-[-6deg]" />
-            <img
-              src={campus}
-              alt="CSC campus"
-              width={1280}
-              height={960}
-              className="aspect-[16/10] w-full rounded-2xl object-cover shadow-xl"
-            />
+            <img src={campus} alt="CSC campus" width={1280} height={960} className="aspect-[16/10] w-full rounded-2xl object-cover shadow-xl" />
             <Arrow className="absolute -bottom-10 -left-6 hidden h-16 w-32 text-secondary/50 sm:block" />
           </div>
         </div>
 
-        {/* stats */}
+        {/* Stats */}
         <div className="mt-12 grid grid-cols-2 gap-4 rounded-3xl paper-card p-6 sm:grid-cols-5">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="font-display text-5xl text-secondary sm:text-6xl">
                 <Counter to={s.n} suffix={s.s} />
               </div>
-              <div className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
-                {s.label}
-              </div>
+              <div className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">{s.label}</div>
             </div>
           ))}
         </div>
@@ -273,21 +191,10 @@ function Explore() {
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {labs.map((l, i) => (
-            <motion.div
-              key={l.name}
-              whileHover={{ y: -6, rotate: -0.5 }}
-              whileTap={{ y: -3, rotate: -0.5, scale: 0.98 }}
-              className="paper-card overflow-hidden"
-            >
+            <motion.div key={l.name} whileHover={{ y: -6, rotate: -0.5 }} whileTap={{ y: -3, rotate: -0.5, scale: 0.98 }} className="paper-card overflow-hidden">
               <div className="relative aspect-[16/10] overflow-hidden">
-                <img
-                  src={labPhotos[i] ?? l.fallback}
-                  alt={l.name}
-                  width={1280}
-                  height={960}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
-                />
+                <img src={labPhotos[i] ?? l.fallback} alt={l.name} width={1280} height={960} loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-110" />
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2">
@@ -301,63 +208,58 @@ function Explore() {
         </div>
       </section>
 
-      {/* Faculty */}
+      {/* Faculty — preview 4 + View All button */}
       <section id="faculty" className="mx-auto mt-20 max-w-7xl px-6">
-        <p className="font-display text-xl text-primary">Our Faculty</p>
-        <h2 className="font-display text-5xl text-secondary">Mentors on speed-dial.</h2>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {faculty.map((f, i) => (
-            <motion.div
-              key={f.name}
-              whileHover={{ y: -6, rotate: i % 2 ? 1 : -1 }}
-              whileTap={{ y: -3, scale: 0.97 }}
-              className="relative paper-card p-6 text-center"
-            >
-              <span className="tape left-1/2 -top-3 -translate-x-1/2 rotate-[-6deg]" />
-              <div
-                className="mx-auto h-24 w-24 overflow-hidden rounded-full"
-                style={{ background: f.tint }}
-              >
-                {facultyPhotos[f.id] ? (
-                  <img
-                    src={facultyPhotos[f.id]}
-                    alt={f.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-secondary">
-                    <Users className="h-10 w-10" />
-                  </div>
-                )}
-              </div>
-              <h3 className="mt-4 font-display text-2xl text-secondary">{f.name}</h3>
-              <p className="text-sm text-muted-foreground">{f.role}</p>
-              <p className="text-xs text-secondary/60">{f.qual}</p>
-            </motion.div>
-          ))}
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="font-display text-xl text-primary">Our Faculty</p>
+            <h2 className="font-display text-5xl text-secondary">Mentors on speed-dial.</h2>
+          </div>
+          <Squiggle className="hidden h-6 w-40 text-primary sm:block" />
         </div>
+
+        {faculty.length === 0 ? (
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="paper-card h-56 animate-pulse rounded-2xl bg-secondary/5" />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {previewFaculty.map((f, i) => (
+              <FacultyCard key={f.id} m={f} i={i} />
+            ))}
+          </div>
+        )}
+
+        {/* View All button */}
+        {faculty.length > 0 && (
+          <div className="mt-10 flex justify-center">
+            <Link
+              to="/faculty"
+              className="group inline-flex items-center gap-3 rounded-full border-2 border-primary bg-white px-8 py-4 text-base font-semibold text-secondary transition hover:bg-primary hover:text-primary-foreground"
+            >
+              View All {faculty.length} Faculty Members
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-white transition group-hover:bg-white group-hover:text-primary">
+                <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </div>
+        )}
       </section>
 
       {/* Projects */}
       <section className="mx-auto mt-20 max-w-7xl px-6">
-        <p id="projects" className="font-display text-xl text-primary">
-          Student Projects
-        </p>
+        <p id="projects" className="font-display text-xl text-primary">Student Projects</p>
         <h2 className="font-display text-5xl text-secondary">A wall of ideas that shipped.</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
-            <motion.div
-              key={p.title}
-              whileHover={{ y: -8, rotate: 0 }}
-              whileTap={{ y: -4, scale: 0.97 }}
+            <motion.div key={p.title} whileHover={{ y: -8, rotate: 0 }} whileTap={{ y: -4, scale: 0.97 }}
               style={{ background: p.tint, transform: `rotate(${p.rot})` }}
-              className="relative rounded-md p-6 shadow-[2px_10px_28px_-12px_rgba(0,0,0,0.28)]"
-            >
+              className="relative rounded-md p-6 shadow-[2px_10px_28px_-12px_rgba(0,0,0,0.28)]">
               <span className="tape left-1/2 -top-3 -translate-x-1/2 rotate-[-4deg]" />
               <h3 className="font-display text-3xl text-secondary">{p.title}</h3>
-              <p className="mt-2 text-sm text-secondary/70">
-                Built by IT students in a semester sprint.
-              </p>
+              <p className="mt-2 text-sm text-secondary/70">Built by IT students in a semester sprint.</p>
             </motion.div>
           ))}
         </div>
@@ -373,25 +275,16 @@ function Explore() {
           ].map((p) => (
             <div key={p.label} className="rounded-2xl bg-white p-6">
               <p.icon className="h-6 w-6 text-primary" />
-              <p className="mt-4 text-sm uppercase tracking-widest text-muted-foreground">
-                {p.label}
-              </p>
+              <p className="mt-4 text-sm uppercase tracking-widest text-muted-foreground">{p.label}</p>
               <p className="mt-1 font-display text-5xl text-secondary">{p.value}</p>
             </div>
           ))}
           <div className="md:col-span-3">
             <p className="text-sm text-muted-foreground">Top recruiters</p>
             <div className="mt-3 flex flex-wrap gap-3">
-              {["Deutsche Bank", "TCS", "Kotak", "NAREDCO", "HDFC Bank", "Sutheerland", "NSE"].map(
-                (r) => (
-                  <span
-                    key={r}
-                    className="rounded-full border border-border bg-white px-4 py-1.5 text-sm font-medium text-secondary"
-                  >
-                    {r}
-                  </span>
-                ),
-              )}
+              {["Deutsche Bank", "TCS", "Kotak", "NAREDCO", "HDFC Bank", "Sutheerland", "NSE"].map((r) => (
+                <span key={r} className="rounded-full border border-border bg-white px-4 py-1.5 text-sm font-medium text-secondary">{r}</span>
+              ))}
             </div>
           </div>
         </div>
@@ -403,15 +296,11 @@ function Explore() {
         <h2 className="font-display text-5xl text-secondary">Notes from the corridor.</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {testimonials.map((t, i) => (
-            <motion.div
-              key={t.name}
-              whileHover={{ y: -6 }}
-              whileTap={{ y: -3, scale: 0.97 }}
+            <motion.div key={t.name} whileHover={{ y: -6 }} whileTap={{ y: -3, scale: 0.97 }}
               style={{ background: t.tint, transform: `rotate(${i % 2 ? 1.2 : -1.2}deg)` }}
-              className="relative rounded-md p-5 shadow-[2px_10px_24px_-12px_rgba(0,0,0,0.25)]"
-            >
+              className="relative rounded-md p-5 shadow-[2px_10px_24px_-12px_rgba(0,0,0,0.25)]">
               <span className="tape left-1/2 -top-3 -translate-x-1/2 rotate-[-6deg]" />
-              <p className="font-display text-lg leading-snug text-secondary">“{t.quote}”</p>
+              <p className="font-display text-lg leading-snug text-secondary">"{t.quote}"</p>
               <p className="mt-3 text-sm text-secondary/70">— {t.name}</p>
             </motion.div>
           ))}
@@ -427,32 +316,20 @@ function Explore() {
             <ul className="mt-6 space-y-3 text-secondary/80">
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-5 w-5 text-primary" />
-                Department of Information Technology, Chandrabhan Sharma College, Powai-Vihar,
-                Powai, Mumbai — 400076
+                Department of Information Technology, Chandrabhan Sharma College, Powai-Vihar, Powai, Mumbai — 400076
               </li>
+              <li className="flex items-center gap-3"><Mail className="h-5 w-5 text-primary" /> itdept@cschcollege.edu.in</li>
+              <li className="flex items-center gap-3"><Phone className="h-5 w-5 text-primary" /> +91 98765 43210</li>
               <li className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-primary" />
-                itdept@cschcollege.edu.in
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-primary" />
-                +91 98765 43210
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">
-                  ⏱
-                </span>{" "}
+                <span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">⏱</span>
                 Mon – Fri · 9:00 AM to 6:00 PM
               </li>
             </ul>
           </div>
           <div className="relative overflow-hidden rounded-2xl border border-border bg-muted">
-            <iframe
-              title="CSC map"
+            <iframe title="CSC map"
               src="https://www.openstreetmap.org/export/embed.html?bbox=72.899%2C19.114%2C72.907%2C19.120&layer=mapnik&marker=19.116556%2C72.902717"
-              className="h-full min-h-[280px] w-full"
-              loading="lazy"
-            />
+              className="h-full min-h-[280px] w-full" loading="lazy" />
           </div>
         </div>
       </section>
