@@ -9,18 +9,22 @@ create table if not exists public.feedback (
   created_at    timestamptz default now(),
   name          text,
   phone         text,
-  course        text check (course in ('bscit','bscds','bscaiml','bsccsdf','bscvfx','bca')),
+  course        text check (course in (
+                  'bscit','bscds','bscaiml','bsccsdf','bscvfx','bca',
+                  'bcom','baf','bbi','bfm','bammc','bms'
+                )),
   orientation   int2 check (orientation between 1 and 5),
-  faculty       int2 check (faculty between 1 and 5),
-  lab           text check (lab in ('excellent','good','average','needs')),
   facilities    int2 check (facilities between 1 and 10),
   suggestions   text,
   recommend     text check (recommend in ('yes','maybe','no'))
 );
 
--- If upgrading an existing table, run these migrations:
--- alter table public.feedback add column if not exists phone text;
--- alter table public.feedback add column if not exists course text check (course in ('bscit','bscds','bscaiml','bsccsdf','bscvfx','bca'));
+-- If upgrading an existing table from the previous schema, run these migrations:
+-- alter table public.feedback drop column if exists faculty;
+-- alter table public.feedback drop column if exists lab;
+-- alter table public.feedback drop constraint if exists feedback_course_check;
+-- alter table public.feedback add constraint feedback_course_check
+--   check (course in ('bscit','bscds','bscaiml','bsccsdf','bscvfx','bca','bcom','baf','bbi','bfm','bammc','bms'));
 
 -- Enable Row Level Security
 alter table public.feedback enable row level security;
